@@ -2,8 +2,8 @@ import isel.leic.UsbPort
 
 fun main() {
     while (true) {
-        Thread.sleep(2000);
-        println(HAL.readBits(5))
+        Thread.sleep(1500);
+        println(HAL.readBits(101))
     }
 
 }

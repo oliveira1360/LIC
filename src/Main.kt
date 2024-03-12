@@ -1,8 +1,9 @@
 import isel.leic.UsbPort
 
 fun main() {
-    while (true){
-        val value  = UsbPort.read()
-        UsbPort.write(value)
+    while (true) {
+        Thread.sleep(2000);
+        println(HAL.readBits(5))
     }
+
 }

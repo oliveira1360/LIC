@@ -24,7 +24,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
 
     // Retorna a tecla premida, caso ocorra antes do ‘timeout’ (representado em milissegundos), ou NONE caso contrário.
     fun waitKey(timeout: Long): Char {
+       val valorAntesDoTimeOut = 0.0.toLong()
         val tecla = KeyReader().waitKeyChar()
-        return if (timeout < tecla) tecla else ' '
+        return if (timeout < valorAntesDoTimeOut) tecla else ' '
     }
 }

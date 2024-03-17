@@ -1,4 +1,7 @@
 import isel.leic.UsbPort
+import isel.leic.utils.KeyReader
+
+
 
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
@@ -13,15 +16,15 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
 
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
-        val tecla = UsbPort.keyreader()
+        val tecla = KeyReader().waitKeyChar()
 
-        return if (tecla != 0) tecla.toChar() else ' '
+        return if (tecla == null ) ' ' else tecla
     }
 
 
     // Retorna a tecla premida, caso ocorra antes do ‘timeout’ (representado em milissegundos), ou NONE caso contrário.
     fun waitKey(timeout: Long): Char {
-        val tecla = UsbPort.keyreader()
+        val tecla = KeyReader().waitKeyChar()
         return if (timeout < tecla) tecla else ' '
     }
 }

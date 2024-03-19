@@ -4,6 +4,8 @@ import isel.leic.utils.Time
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
     const val NONE = 0;
+    const val CLR = 0b1111_1111
+    const val SET = 0b0001_0000
     val digitArray = "147*2580369#".toCharArray()
 
     // Inicia a classe
@@ -17,7 +19,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
         val tecla = HAL.readBits(0b0000_1111)
 
         if (HAL.isBit(0b0001_0000) ) {
-            HAL.setBits(0b0001_0000)
+            HAL.setBits(SET)
+            HAL.clrBits(CLR)
             return digitArray[tecla]
 
         }

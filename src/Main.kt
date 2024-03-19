@@ -12,8 +12,9 @@ fun main() {
         HAL.setBits(0b0001)
          */
         Thread.sleep(1500)
-        var teste = HAL.readBits(0b0000_1111)
+        var teste = KBD.getKey()
         println(teste)
+
 
     }
 

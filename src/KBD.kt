@@ -4,17 +4,24 @@ import isel.leic.utils.Time
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
     const val NONE = 0;
+    val digitArray = "147*2580369#".toCharArray()
 
     // Inicia a classe
     fun init() {
-
+        HAL.clrBits(0b1111_1111)
     }
 
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
 
         val tecla = HAL.readBits(0b0000_1111)
-        return if (KeyReader().isAnyKeyPressed ) tecla else ' '
+
+        if (HAL.isBit(0b0001_0000) ) {
+            HAL.setBits(0b0001_0000)
+            return digitArray[tecla]
+
+        }
+        return ' '
     }
 
     // Retorna a tecla premida, caso ocorra antes do ‘timeout’ (representado em milissegundos), ou NONE caso contrário.

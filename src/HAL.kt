@@ -20,8 +20,8 @@ object HAL { // Virtualiza o acesso ao sistema UsbPort
 
     // Escreve nos bits representados por mask os valores dos bits correspondentes em value
     fun writeBits(mask: Int, value: Int) {
-        mask.and(value)
-        plate_value = plate_value.or(mask)
+        val m = mask and value
+        plate_value = mask or m
         UsbPort.write(plate_value)
     }
 

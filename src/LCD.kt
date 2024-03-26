@@ -1,6 +1,9 @@
+import isel.leic.utils.Time
+
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
+    private const val SERIAL_INTERFACE = false
 
     const val DATA_MASK = 0x0F
     const val RS_MASK = 0x40
@@ -8,18 +11,27 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     const val CLK_REG_MASK = 0x10
 
     // Escreve um byte de comando/dados no LCD em paralelo
-     fun writeByteParallel(rs: Boolean, data: Int){
-        if (rs) {
-            val low = data.and(DATA_MASK)
-            HAL.writeBits(DATA_MASK, low)
-            println("low " + low)
-            HAL.setBits(CLK_REG_MASK)
-            HAL.clrBits(CLK_REG_MASK)
-            val high = data.shr(4)
-            println("high " + high)
-            HAL.writeBits(DATA_MASK, high)
+      fun writeByteParallel(rs: Boolean, data: Int){
+        if (rs)
+            HAL.setBits(RS_MASK)
+        else
+            HAL.clrBits(RS_MASK)
 
-        }
+        HAL.setBits(E_MASK)
+
+         val high = data.shr(4) //write highbits
+        HAL.writeBits(DATA_MASK, high)
+
+        HAL.setBits(CLK_REG_MASK) //clock
+        HAL.clrBits(CLK_REG_MASK)
+
+        val low = data.and(DATA_MASK)
+        HAL.writeBits(DATA_MASK, low) //write lowbits
+
+        HAL.setBits(CLK_REG_MASK) //clock
+        HAL.clrBits(CLK_REG_MASK)
+
+        HAL.clrBits(E_MASK)
     }
 
     // Escreve um byte de comando/dados no LCD em série
@@ -30,13 +42,16 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Escreve um byte de comando/dados no LCD
     private fun writeByte(rs: Boolean, data: Int) {
-
+        if (SERIAL_INTERFACE)
+            writeByteSerial(rs,data)
+        else
+            writeByteParallel(rs, data)
     }
 
 
     // Escreve um comando no LCD
     private fun writeCMD(data: Int) {
-
+     writeByte(false, data)
     }
 
 
@@ -48,6 +63,19 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia a sequência de iniciação para comunicação a 4 bits.
     fun init() {
+        Time.sleep(16)
+        writeCMD(0b0011_0000)
+        Time.sleep(5)
+        writeCMD(0b0011_0000)
+        Time.sleep(1)
+        writeCMD(0b0011_0000)
+
+        writeCMD(0b0011_0000)
+        writeCMD(0b0000_1000)  //display off
+        writeCMD(0b0000_0001) //display clear
+        writeCMD(0b0000_0111) //mode set
+
+        writeCMD(0b0000_1111) //lcd on
 
     }
 

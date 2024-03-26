@@ -1,5 +1,13 @@
 import isel.leic.utils.Time
 
+fun main() {
+
+    //LCD.writeByteParallel(false,0b0011_0000)
+    HAL.init()
+    LCD.init()
+    LCD.write("0145")
+
+}
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
@@ -20,13 +28,14 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         HAL.setBits(E_MASK)
 
         val high = data.shr(4) //write highbits
-        HAL.clrBits(DATA_MASK)
+       HAL.clrBits(DATA_MASK) //
         HAL.writeBits(DATA_MASK, high)
 
         HAL.setBits(CLK_REG_MASK) //clock
         HAL.clrBits(CLK_REG_MASK)
 
         //val low = data.and(DATA_MASK)
+        HAL.clrBits(DATA_MASK) //
         HAL.writeBits(DATA_MASK, data) //write lowbits
         HAL.setBits(CLK_REG_MASK) //clock
         HAL.clrBits(CLK_REG_MASK)
@@ -57,9 +66,8 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Escreve um dado no LCD
     private fun writeDATA(data: Int) {
-
+        writeByte(true, data)
     }
-
 
     // Envia a sequência de iniciação para comunicação a 4 bits.
     fun init() {
@@ -71,35 +79,42 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         writeCMD(0b0011_0000)
 
         writeCMD(0b0011_1000)
-        writeCMD(0b0000_1000)  //display off
-        writeCMD(0b0000_0001) //display clear
-        writeCMD(0b0000_0111) //mode set
+        writeCMD(0b0000_1000)//display off
+        writeCMD(0b0000_0001)//display clear
+        writeCMD(0b0000_0111)//mode set
 
-        writeCMD(0b0000_1111) //lcd on
+        writeCMD(0b0000_1111)//lcd on
 
     }
 
 
     // Escreve um caráter na posição corrente.
     fun write(c: Char) {
+        writeDATA(c.code)
         
     }
 
 
     // Escreve uma string na posição corrente.
     fun write(text: String) {
+        for (element in text)
+            write(element)
 
     }
 
 
     // Envia comando para posicionar cursor (‘line’:0..LINES-1 , ‘column’:0..COLS-1)
     fun cursor(line: Int, column: Int) {
+        if (line <= LINES && column <= COLS ){
+
+        }
 
     }
 
 
     // Envia comando para limpar o ecrã e posicionar o cursor em (0,0)
     fun clear() {
-
+        for (i in 0 .. COLS)
+            write(' ')
     }
 }

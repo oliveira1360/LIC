@@ -1,13 +1,16 @@
 
 import isel.leic.UsbPort
 import isel.leic.utils.Time
+import kotlin.concurrent.thread
 
 fun main() {
 
     //LCD.writeByteParallel(false,0b0011_0000)
     HAL.init()
-    while (true)
-        println( KBD.getKey())
+    while (true) {
+        val read = KBD.getKey()
+        println(read)
+    }
 }
 
 
@@ -15,8 +18,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     const val NONE = 0;
     const val CLR_ALL_BITS = 0b1111_1111
     const val SET_ACK_1 = 0b0001_0000
-    //    const val CHECKBIT = 0b0001_0000
-    const val CHECKBIT = 0b0000_0001
+       const val CHECKBIT = 0b0001_0000
+   // const val CHECKBIT = 0b0000_0001
     private val digitArray = "147*2580369#    ".toCharArray()
     const val NONERETURN = ' '
 
@@ -28,8 +31,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
         if (HAL.isBit(CHECKBIT) ) {
-            //val tecla = HAL.readBits(0b0000_1111)
-            val tecla = HAL.readBits(0b0001_1110).shr(1)
+            val tecla = HAL.readBits(0b0000_1111)
+           // val tecla = HAL.readBits(0b0001_1110).shr(1)
             HAL.setBits(SET_ACK_1)
             HAL.clrBits(SET_ACK_1)
             return digitArray[tecla]

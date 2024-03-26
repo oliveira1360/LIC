@@ -1,4 +1,5 @@
 
+import isel.leic.UsbPort
 import isel.leic.utils.Time
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
@@ -6,7 +7,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     const val CLR_ALL_BITS = 0b1111_1111
     const val SET_ACK_1 = 0b0001_0000
     const val CHECKBIT = 0b0001_0000
-    private val digitArray = "147*2580369#".toCharArray()
+    private val digitArray = "147*2580369#    ".toCharArray()
     const val NONERETURN = ' '
 
     // Inicia a classe
@@ -16,14 +17,11 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
 
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
-
-        val tecla = HAL.readBits(0b0000_1111)
-
         if (HAL.isBit(CHECKBIT) ) {
-            HAL.setBits(SET_ACK_1)
-            HAL.clrBits(CLR_ALL_BITS)
-            return digitArray[tecla]
-
+                val tecla = HAL.readBits(0b0000_1111)
+                HAL.setBits(SET_ACK_1)
+                HAL.clrBits(CLR_ALL_BITS)
+                return digitArray[tecla]
         }
         return NONERETURN
     }

@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="954b770c-f076-4ef4-895d-4448bbe6a32a" name="Changes" comment="several changes">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Simul.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Simul.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/USB_PORT.properties" beforeDir="false" afterPath="$PROJECT_DIR$/USB_PORT.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware.simul" beforeDir="false" afterPath="$PROJECT_DIR$/hardware.simul" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HAL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/HAL.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/KBD.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/KBD.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LCD.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/LCD.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

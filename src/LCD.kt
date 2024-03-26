@@ -19,15 +19,15 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
         HAL.setBits(E_MASK)
 
-         val high = data.shr(4) //write highbits
+        val high = data.shr(4) //write highbits
+        HAL.clrBits(DATA_MASK)
         HAL.writeBits(DATA_MASK, high)
 
         HAL.setBits(CLK_REG_MASK) //clock
         HAL.clrBits(CLK_REG_MASK)
 
-        val low = data.and(DATA_MASK)
-        HAL.writeBits(DATA_MASK, low) //write lowbits
-
+        //val low = data.and(DATA_MASK)
+        HAL.writeBits(DATA_MASK, data) //write lowbits
         HAL.setBits(CLK_REG_MASK) //clock
         HAL.clrBits(CLK_REG_MASK)
 
@@ -70,7 +70,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         Time.sleep(1)
         writeCMD(0b0011_0000)
 
-        writeCMD(0b0011_0000)
+        writeCMD(0b0011_1000)
         writeCMD(0b0000_1000)  //display off
         writeCMD(0b0000_0001) //display clear
         writeCMD(0b0000_0111) //mode set
@@ -82,7 +82,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Escreve um caráter na posição corrente.
     fun write(c: Char) {
-
+        
     }
 
 

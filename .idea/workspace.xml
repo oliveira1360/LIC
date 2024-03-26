@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954b770c-f076-4ef4-895d-4448bbe6a32a" name="Changes" comment="some changes">
+    <list default="true" id="954b770c-f076-4ef4-895d-4448bbe6a32a" name="Changes" comment="changes">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Simul.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Simul.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HAL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/HAL.kt" afterDir="false" />
@@ -87,6 +89,8 @@
       <workItem from="1710321639737" duration="63000" />
       <workItem from="1710781457678" duration="1670000" />
       <workItem from="1710835435792" duration="585000" />
+      <workItem from="1711460999980" duration="1650000" />
+      <workItem from="1711462680423" duration="50000" />
     </task>
     <task id="LOCAL-00003" summary="some changes">
       <option name="closed" value="true" />
@@ -96,7 +100,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711448038176</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="changes">
+      <option name="closed" value="true" />
+      <created>1711453576557</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1711453576557</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +119,26 @@
     <MESSAGE value="teste" />
     <MESSAGE value="several changes" />
     <MESSAGE value="some changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="some changes" />
+    <MESSAGE value="changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Main.kt</url>
+          <line>5</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/LCD.kt</url>
+          <line>66</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-defaults>
+        <breakpoint suspend="THREAD" type="kotlin-line" />
+      </breakpoints-defaults>
+    </breakpoint-manager>
   </component>
 </project>

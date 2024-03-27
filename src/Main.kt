@@ -6,4 +6,12 @@ fun main() {
         LCD.init()
         //HAL.writeBits(0b0000_1111, 0b0011_00000)
 
+        while (true) {
+                Thread.sleep(1000)
+                val teste = KBD.getKey()
+                LCD.write(teste.toString())
+        }
+
+
+
 }

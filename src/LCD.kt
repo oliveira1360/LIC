@@ -1,11 +1,29 @@
 import isel.leic.utils.Time
 
+var pos = 0
+
 fun main() {
 
     //LCD.writeByteParallel(false,0b0011_0000)
     HAL.init()
+    //LCD.init()
     LCD.init()
-    LCD.write("0145")
+    LCD.write("011d")
+    //LCD.cursor(1,0)
+    //LCD.clear()
+
+    //LCD.writeByteParallel(false,0b0011_0000)
+    //HAL.init()
+    //HAL.writeBits(0b0000_1111, 0b0011_00000)
+
+
+    LCD.cursor(2,1)
+
+
+
+
+
+
 
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
@@ -19,7 +37,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     const val CLK_REG_MASK = 0x10
 
     // Escreve um byte de comando/dados no LCD em paralelo
-      fun writeByteParallel(rs: Boolean, data: Int){
+    fun writeByteParallel(rs: Boolean, data: Int){
         if (rs)
             HAL.setBits(RS_MASK)
         else
@@ -28,7 +46,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         HAL.setBits(E_MASK)
 
         val high = data.shr(4) //write highbits
-       HAL.clrBits(DATA_MASK) //
+        HAL.clrBits(DATA_MASK) //
         HAL.writeBits(DATA_MASK, high)
 
         HAL.setBits(CLK_REG_MASK) //clock
@@ -60,7 +78,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Escreve um comando no LCD
     private fun writeCMD(data: Int) {
-     writeByte(false, data)
+        writeByte(false, data)
     }
 
 
@@ -91,7 +109,10 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Escreve um caráter na posição corrente.
     fun write(c: Char) {
         writeDATA(c.code)
-        
+        pos++
+        if (COLS * LINES == pos)
+            pos = 0
+
     }
 
 
@@ -105,16 +126,22 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia comando para posicionar cursor (‘line’:0..LINES-1 , ‘column’:0..COLS-1)
     fun cursor(line: Int, column: Int) {
-        if (line <= LINES && column <= COLS ){
+        val pos_new = line * (column - 1)
+        val total_pos = 79
 
-        }
+        val new_pos = ((line -1 ) * 64) +  column
+
+        writeCMD(0b0000_0001)//display clear
+        for (i in 0 until new_pos - 1)
+            write(' ')
+
 
     }
 
 
     // Envia comando para limpar o ecrã e posicionar o cursor em (0,0)
     fun clear() {
-        for (i in 0 .. COLS)
-            write(' ')
+        writeCMD(0b0000_0001)//display clear
+        cursor(0,0)
     }
 }

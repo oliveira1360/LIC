@@ -12,11 +12,11 @@ fun main() {
             LCD.write(key)
         else if (key == '#') {
             if (pos) {
-                LCD.cursor(1, 0)
+                LCD.cursor(1, 1)
                 pos = false
             }
             else{
-                LCD.cursor(0, 0)
+                LCD.cursor(2, 1)
                pos = true
             }
         } else if (key == '*')

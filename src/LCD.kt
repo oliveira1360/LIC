@@ -128,15 +128,15 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia comando para posicionar cursor (‘line’:0..LINES-1 , ‘column’:0..COLS-1)
     fun cursor(line: Int, column: Int) {
-        /*
+
         val new_pos = ((line - 1) * 40) + column
 
         clear()//display clear
         for (i in 0 until new_pos - 1)
             write(' ')
- */
 
-        writeCMD(0b0010_0000)//display clear
+
+        //writeCMD(0b0010 + new_pos)//display clear
 
 
     }

@@ -33,8 +33,12 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
         if (HAL.isBit(CHECKBIT) ) {
             val tecla = HAL.readBits(0b0000_1111)
             HAL.setBits(SET_ACK_1)
-            HAL.clrBits(SET_ACK_1)
-            return digitArray[tecla]
+            while (!HAL.isBit(0b0001_0000)){
+                HAL.clrBits(SET_ACK_1)
+                return digitArray[tecla]
+            }
+
+
         }
         return NONERETURN
     }

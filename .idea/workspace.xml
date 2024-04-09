@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954b770c-f076-4ef4-895d-4448bbe6a32a" name="Changes" comment="changes">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_03_2024_11_14__Changes_.xml" beforeDir="false" />
+    <list default="true" id="954b770c-f076-4ef4-895d-4448bbe6a32a" name="Changes" comment="some changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Simul.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Simul.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HAL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/HAL.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/USB_PORT.properties" beforeDir="false" afterPath="$PROJECT_DIR$/USB_PORT.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/KBD.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/KBD.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LCD.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/LCD.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/TUI.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +37,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
@@ -47,7 +48,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Kotlin.TUIKt">
+    <configuration name="LCDKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="LCDKt" />
+      <module name="Project_LIC" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MainKt" />
       <module name="Project_LIC" />
@@ -55,8 +63,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TUIKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TUIKt" />
+      <module name="Project_LIC" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.TUIKt" />
+        <item itemvalue="Kotlin.LCDKt" />
         <item itemvalue="Kotlin.MainKt" />
       </list>
     </recent_temporary>
@@ -126,14 +143,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Main.kt</url>
-          <line>5</line>
-          <option name="timeStamp" value="10" />
+          <url>file://$PROJECT_DIR$/src/LCD.kt</url>
+          <line>10</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/LCD.kt</url>
-          <line>66</line>
-          <option name="timeStamp" value="14" />
+          <line>138</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/TUI.kt</url>
+          <line>13</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-defaults>

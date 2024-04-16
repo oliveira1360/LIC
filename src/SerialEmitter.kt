@@ -1,5 +1,6 @@
+import java.sql.Time
 
-const val CLK_REG_MASK = 0x10
+
 
 fun main() {
 
@@ -18,7 +19,8 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
     // Inicia a classe
     fun init() {
-        send(Destination.LCD, 0b1_1100_1000,10)
+        HAL.clrBits(0b1111_1111)
+        send(Destination.LCD, 0b1_0000_0000,10)
 
     }
 
@@ -53,13 +55,14 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         if (Destination.LCD == addr) {
             //redefeniri o LCD e SClk
+            HAL.setBits(LCDsel)
+            //isel.leic.utils.Time.sleep(20)
             HAL.clrBits(LCDsel)
-            HAL.setBits(SCLK)
-            clock()
-            for (i in 0 until size) {
 
+            for (i in 0 until size) {
+                isel.leic.utils.Time.sleep(100)
                 val teste  = dataSend[i]
-                    if (dataSend[i].code == 1)
+                    if (dataSend[i] == '1')
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
@@ -68,9 +71,9 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             }
             // I = size
             HAL.setBits(LCDsel)
-            HAL.clrBits(SCLK)
-            HAL.clrBits(SDX)
-            clock()
+
+
+
         }
         else if (Destination.SCORE == addr){
             HAL.clrBits(LCDsel)
@@ -102,8 +105,10 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     }
 
     fun clock(){
-        HAL.setBits(CLK_REG_MASK) //clock
-        HAL.clrBits(CLK_REG_MASK)
+        isel.leic.utils.Time.sleep(10)
+        HAL.setBits(SCLK) //clock
+        isel.leic.utils.Time.sleep(10)
+        HAL.clrBits(SCLK)
     }
 
 

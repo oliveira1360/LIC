@@ -52,15 +52,11 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
 
         if (Destination.LCD == addr) {
-            //i = 0
+            //redefeniri o LCD e SClk
             HAL.clrBits(LCDsel)
             HAL.setBits(SCLK)
-            if (dataSend[0].code == 1)
-                HAL.setBits(SDX)
-            else
-                HAL.clrBits(SDX)
             clock()
-            for (i in 1 until size) {
+            for (i in 0 until size) {
 
                 val teste  = dataSend[i]
                     if (dataSend[i].code == 1)
@@ -77,12 +73,19 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             clock()
         }
         else if (Destination.SCORE == addr){
-            for (i in 0 until size)
+            HAL.clrBits(LCDsel)
+            HAL.setBits(SCLK)
+            clock()
+            for (i in 0 until size) {
                 if (dataSend[i].code == 1)
                     HAL.setBits(SDX)
                 else
                     HAL.clrBits(SDX)
 
+                clock()
+            }
+            HAL.clrBits(LCDsel)
+            HAL.setBits(SCLK)
             clock()
         }
     }

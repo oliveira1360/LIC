@@ -18,7 +18,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
     // Inicia a classe
     fun init() {
-        send(Destination.SCORE, 0b1_1100_1000,10)
+        send(Destination.LCD, 0b1_1100_1000,10)
 
     }
 
@@ -51,37 +51,39 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
 
 
-        if (Destination.SCORE == addr) {
-            for (i in 0 until size + 1) {
-                if ( i == size){
-                    HAL.setBits(LCDsel)
-                    HAL.clrBits(SCLK)
-                    HAL.clrBits(SDX)
-                }
-                if (i == 0) {
-                    HAL.clrBits(LCDsel)
-                    HAL.setBits(SCLK)
+        if (Destination.LCD == addr) {
+            //i = 0
+            HAL.clrBits(LCDsel)
+            HAL.setBits(SCLK)
+            if (dataSend[0].code == 1)
+                HAL.setBits(SDX)
+            else
+                HAL.clrBits(SDX)
+            clock()
+            for (i in 1 until size) {
+
+                val teste  = dataSend[i]
                     if (dataSend[i].code == 1)
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
-                }
-                if (i > 0 && i < size) {
-                    if (dataSend[i].code == 1)
-                        HAL.setBits(SDX)
-                    else
-                        HAL.clrBits(SDX)
-                }
-                HAL.setBits(CLK_REG_MASK) //clock
-                HAL.clrBits(CLK_REG_MASK)
+
+                clock()
             }
-
-
-
+            // I = size
+            HAL.setBits(LCDsel)
+            HAL.clrBits(SCLK)
+            HAL.clrBits(SDX)
+            clock()
         }
-        else{
+        else if (Destination.SCORE == addr){
             for (i in 0 until size)
-                HAL.setBits(dataSend[i].code)
+                if (dataSend[i].code == 1)
+                    HAL.setBits(SDX)
+                else
+                    HAL.clrBits(SDX)
+
+            clock()
         }
     }
 
@@ -94,6 +96,11 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             decimalNumber /= 2
         }
         return intList.reversed().joinToString("")
+    }
+
+    fun clock(){
+        HAL.setBits(CLK_REG_MASK) //clock
+        HAL.clrBits(CLK_REG_MASK)
     }
 
 

@@ -1,7 +1,5 @@
 
-import isel.leic.UsbPort
 import isel.leic.utils.Time
-import kotlin.concurrent.thread
 
 fun main() {
 

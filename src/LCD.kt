@@ -68,7 +68,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     }
 
 
-    // Escreve um byte de comando/dados no LCD
+        // Escreve um byte de comando/dados no LCD
     private fun writeByte(rs: Boolean, data: Int) {
         if (SERIAL_INTERFACE)
             writeByteSerial(rs,data)
@@ -111,10 +111,6 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Escreve um caráter na posição corrente.
     fun write(c: Char) {
         writeDATA(c.code)
-
-
-
-
     }
 
 

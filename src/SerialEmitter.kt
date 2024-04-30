@@ -32,7 +32,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
         //pit paridade depende se o numero de 1 e par ou impar 0 = par, 1 = impar
         //o size limita o tamnho data a ser enviado
 
-
+        //nada
 
         var valor = 0
         var left = data

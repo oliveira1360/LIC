@@ -67,7 +67,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
-
+                println(teste)
                 clock()
             }
             // I = size

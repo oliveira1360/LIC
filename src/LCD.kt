@@ -3,34 +3,12 @@ import isel.leic.utils.Time
 var pos = true// true == linha de cima
 
 fun main() {
-
-    //LCD.writeByteParallel(false,0b0011_0000)
-    HAL.init()
-    //LCD.init()
     LCD.init()
-  //  LCD.write("011d")
-    //LCD.cursor(1,0)
-    //LCD.clear()
-
-    //LCD.writeByteParallel(false,0b0011_0000)
-    //HAL.init()
-    //HAL.writeBits(0b0000_1111, 0b0011_00000)
-
-
-        LCD.cursor(1, 7)
-
-
-
-
-
-
-
-
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
-    private const val SERIAL_INTERFACE = false
+    private const val SERIAL_INTERFACE = true
 
     const val DATA_MASK = 0x0F
     const val RS_MASK = 0x40
@@ -65,20 +43,9 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Escreve um byte de comando/dados no LCD em série
     private fun writeByteSerial(rs: Boolean, data: Int) {
         if (rs)
-            HAL.setBits(RS_MASK)
+            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1) + 1, 10)
         else
-            HAL.clrBits(RS_MASK)
-
-        //HAL.setBits(E_MASK)
-
-
-        SerialEmitter.send(SerialEmitter.Destination.LCD, data, 10)
-
-
-
-
-      //  HAL.clrBits(E_MASK)
-
+            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1), 10)
     }
 
 
@@ -106,7 +73,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun init() {
         Time.sleep(16)
         writeCMD(0b0011_0000)
-        Time.sleep(5)
+        /*Time.sleep(5)
         writeCMD(0b0011_0000)
         Time.sleep(1)
         writeCMD(0b0011_0000)
@@ -117,7 +84,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         Time.sleep(2)
         writeCMD(0b0000_0110)//mode set
 
-        writeCMD(0b0000_1111)//lcd on
+        writeCMD(0b0000_1111)//lcd on*/
 
     }
 

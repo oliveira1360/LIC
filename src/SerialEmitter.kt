@@ -43,7 +43,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         val paridade = if (valor == 1) 1 else 0
 
-        val withParaty =  data.shl(1)
+        val withParaty =  data
 
         var mandar = withParaty
 
@@ -55,6 +55,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             HAL.setBits(SDX)
         else
             HAL.clrBits(SDX)
+        clock()
 
             for (i in size - 1 downTo 1) {
                  val send = mandar and MASK_SEND
@@ -69,6 +70,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
                 HAL.setBits(SDX)
             else
                 HAL.clrBits(SDX)
+            clock()
             // I = size
             HAL.setBits(LCDsel)
 

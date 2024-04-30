@@ -21,7 +21,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b1101_1110_0,9)
+        send(Destination.LCD, 0b0101_1110_0,9)
 
     }
 

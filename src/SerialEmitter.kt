@@ -21,7 +21,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b0001_1010,9)
+        send(Destination.LCD, 0b0111_0110,9)
 
     }
 
@@ -43,7 +43,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         val paridade = if (valor == 1) 1 else 0
 
-        val withParaty = paridade + data
+        val withParaty =  data.shl(1)
 
         var mandar = withParaty
 
@@ -59,6 +59,10 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
                 mandar = mandar.shr(1)
                 clock()
             }
+            if (paridade == 1)
+                HAL.setBits(SDX)
+            else
+                HAL.clrBits(SDX)
             // I = size
             HAL.setBits(LCDsel)
 

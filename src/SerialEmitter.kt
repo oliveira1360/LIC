@@ -21,7 +21,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b0000_1010,9)
+        send(Destination.LCD, 0b0001_1010,9)
 
     }
 
@@ -35,11 +35,13 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
 
         var valor = 0
-        for (i in size- 1 downTo 1) {
-            valor = data.xor(valor)
+        var left = data
+        while (left != 0) {
+            valor = valor xor (left and 1)
+            left = left shr 1 // Right shift to get next bit
         }
 
-        val paridade = if (valor != 0) 0 else 1
+        val paridade = if (valor == 1) 1 else 0
 
         val withParaty = paridade + data
 

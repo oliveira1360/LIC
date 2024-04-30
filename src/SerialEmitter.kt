@@ -50,7 +50,13 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         HAL.clrBits(LCDsel)
 
-            for (i in size downTo 0) {
+        val rs = data.shr(size)
+        if (rs == 1)
+            HAL.setBits(SDX)
+        else
+            HAL.clrBits(SDX)
+
+            for (i in size - 1 downTo 1) {
                  val send = mandar and MASK_SEND
                     if (send == 1)
                         HAL.setBits(SDX)

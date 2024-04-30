@@ -21,7 +21,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b0111_0110,9)
+        send(Destination.LCD, 0b1101_1110_0,9)
 
     }
 
@@ -50,22 +50,27 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         HAL.clrBits(LCDsel)
 
-        val rs = data.shr(size)
+        val rs = if (data % 2 == 0) 0 else 1
         if (rs == 1)
             HAL.setBits(SDX)
         else
             HAL.clrBits(SDX)
+        println("    rs: " + rs + "  fim")
         clock()
 
-            for (i in size - 1 downTo 1) {
-                 val send = mandar and MASK_SEND
+        var send: Int
+        for (i in size - 1 downTo 1) {
+                mandar = mandar.shr(1)
+                send = mandar and MASK_SEND
+                println("    dado: " + send + "  fim")
                     if (send == 1)
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
-                mandar = mandar.shr(1)
+
                 clock()
             }
+        print("    paridade: " + paridade + "  fim")
             if (paridade == 1)
                 HAL.setBits(SDX)
             else

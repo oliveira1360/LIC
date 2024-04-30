@@ -21,7 +21,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b0110_1000,9)
+        send(Destination.LCD, 0b0110_1010,9)
 
     }
 
@@ -36,10 +36,9 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
         var data = data
         var valor = 0xff
         for (i in size- 1 downTo 1) {
+            valor = data.xor(valor)
             valor = valor.shr(1) and  MASK_SEND
             data = data.shr(1) and MASK_SEND
-            valor = data.xor(valor)
-
 
         }
 

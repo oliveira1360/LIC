@@ -64,6 +64,20 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Escreve um byte de comando/dados no LCD em série
     private fun writeByteSerial(rs: Boolean, data: Int) {
+        if (rs)
+            HAL.setBits(RS_MASK)
+        else
+            HAL.clrBits(RS_MASK)
+
+        //HAL.setBits(E_MASK)
+
+
+        SerialEmitter.send(SerialEmitter.Destination.LCD, data, 10)
+
+
+
+
+      //  HAL.clrBits(E_MASK)
 
     }
 

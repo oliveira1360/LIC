@@ -1,27 +1,35 @@
-import java.sql.Time
+import isel.leic.utils.Time
 
 
 const val CHECK_P = 0
 const val MASK_SEND = 0x01
 fun main() {
 
-   SerialEmitter.init()
+    HAL.init()
+    SerialEmitter.init()
+    while(true){
 
+    SerialEmitter.send(SerialEmitter.Destination.LCD,0x155,9)
+        Time.sleep(100)
+    }
 }
 
 
 object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiver.
 
     val LCDsel = 0x01
-    val SCLK = 0x02
-    val SDX = 0x04
+    val SCLK = 0x02 //10
+    val SDX = 0x04 //08
 
     enum class Destination {LCD, SCORE}
 
     // Inicia a classe
     fun init() {
 
-        send(Destination.LCD, 0b0101_1110_0,9)
+
+        HAL.setBits(LCDsel)
+
+     //   send(Destination.LCD, 0b0101_0101_0,9)
 
     }
 
@@ -55,14 +63,14 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             HAL.setBits(SDX)
         else
             HAL.clrBits(SDX)
-        println("    rs: " + rs + "  fim")
+        //println("    rs: " + rs + "  fim")
         clock()
 
         var send: Int
         for (i in size - 1 downTo 1) {
                 mandar = mandar.shr(1)
                 send = mandar and MASK_SEND
-                println("    dado: " + send + "  fim")
+          //      println("    dado: " + send + "  fim")
                     if (send == 1)
                         HAL.setBits(SDX)
                     else
@@ -70,7 +78,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
                 clock()
             }
-        print("    paridade: " + paridade + "  fim")
+        //print("    paridade: " + paridade + "  fim")
             if (paridade == 1)
                 HAL.setBits(SDX)
             else
@@ -82,9 +90,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     }
 
     fun clock(){
-        isel.leic.utils.Time.sleep(10)
         HAL.setBits(SCLK) //clock
-        isel.leic.utils.Time.sleep(10)
         HAL.clrBits(SCLK)
     }
 

@@ -29,7 +29,6 @@ object HAL { // Virtualiza o acesso ao sistema UsbPort
     fun setBits(mask: Int) {
         val valor = plate_value.or(mask)
         plate_value = valor
-        print(plate_value)
         UsbPort.write(plate_value)
     }
 

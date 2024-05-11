@@ -1,7 +1,6 @@
 import isel.leic.utils.Time
 
 
-const val MASK_SEND = 0x01
 fun main() {
 
     LCD.init()
@@ -52,22 +51,14 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         HAL.clrBits(LCDsel)
 
-        val rs = if (data % 2 == 0) 0 else 1
-        if (rs == 1)
-            HAL.setBits(SDX)
-        else
-            HAL.clrBits(SDX)
-        clock()
 
-        var send: Int
-        for (i in size - 1 downTo 1) {
-                mandar = mandar.shr(1)
-                send = mandar and MASK_SEND
-                    if (send == 1)
+        for (i in size  downTo 1) {
+                    if (mandar%2 != 0)
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
-                clock()
+            mandar = mandar.shr(1)
+            clock()
             }
             if (paridade == 1)
                 HAL.setBits(SDX)

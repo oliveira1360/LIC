@@ -3,7 +3,14 @@
 fun main(){
     HAL.init()
     SerialEmitter.init()
-    ScoreDisplay.setScore(0b000_1000)
+    ScoreDisplay.setScore(0b0001_000)
+    ScoreDisplay.setScore(0b0010_001)
+    ScoreDisplay.setScore(0b0011_010)
+
+    ScoreDisplay.setScore(0b1001_011)
+    ScoreDisplay.setScore(0b1010_110)    //uptade
+
+
 
 }
 
@@ -26,7 +33,7 @@ object ScoreDisplay { // Controla o mostrador de pontuação.
 
     // Envia comando para desativar/ativar a visualização do mostrador de pontuação
     fun off(value: Boolean) {
-        return if (value) setScore( 0b111_0000)
-        else setScore( 0b111_0001)
+        return if (value) setScore( 0b0001_111)
+        else setScore( 0b0000_111)
     }
 }

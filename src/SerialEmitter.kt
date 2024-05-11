@@ -1,10 +1,10 @@
 import isel.leic.utils.Time
 
 
-const val CHECK_P = 0
 const val MASK_SEND = 0x01
 fun main() {
 
+    LCD.init()
     HAL.init()
     SerialEmitter.init()
     while(true){
@@ -25,11 +25,8 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
     // Inicia a classe
     fun init() {
-
-
         HAL.setBits(LCDsel)
 
-     //   send(Destination.LCD, 0b0101_0101_0,9)
 
     }
 
@@ -37,23 +34,20 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
     fun send(addr: Destination, data: Int, size : Int) {
 
         //usar o hal
-        //pit paridade depende se o numero de 1 e par ou impar 0 = par, 1 = impar
-        //o size limita o tamnho data a ser enviado
-
-        //nada
+        //bit, 0 = par, 1 = impar
 
         var valor = 0
         var left = data
         while (left != 0) {
             valor = valor xor (left and 1)
-            left = left shr 1 // Right shift to get next bit
+            left = left shr 1 // Right shift para conseguir o proximo bit
         }
 
         val paridade = if (valor == 1) 1 else 0
 
-        val withParaty =  data
+        //val withParaty =  data
 
-        var mandar = withParaty
+        var mandar = data
 
 
         HAL.clrBits(LCDsel)
@@ -63,28 +57,23 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             HAL.setBits(SDX)
         else
             HAL.clrBits(SDX)
-        //println("    rs: " + rs + "  fim")
         clock()
 
         var send: Int
         for (i in size - 1 downTo 1) {
                 mandar = mandar.shr(1)
                 send = mandar and MASK_SEND
-          //      println("    dado: " + send + "  fim")
                     if (send == 1)
                         HAL.setBits(SDX)
                     else
                         HAL.clrBits(SDX)
-
                 clock()
             }
-        //print("    paridade: " + paridade + "  fim")
             if (paridade == 1)
                 HAL.setBits(SDX)
             else
                 HAL.clrBits(SDX)
             clock()
-            // I = size
             HAL.setBits(LCDsel)
 
     }

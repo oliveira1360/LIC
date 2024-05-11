@@ -1,3 +1,5 @@
+const val TIME = 17345524000
+
 
 fun main() {
 
@@ -6,8 +8,8 @@ fun main() {
     LCD.init()
     while (true) {
 
-
-        val key = KBD.getKey()
+        val key = KBD.waitKey(TIME)
+        println(key)
         if (key in ('0'..'9'))
             LCD.write(key)
         else if (key == '#') {

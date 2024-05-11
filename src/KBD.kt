@@ -1,24 +1,35 @@
 
 import isel.leic.utils.Time
+import kotlin.concurrent.thread
 
+//corrigir tudo
 fun main() {
 
     //LCD.writeByteParallel(false,0b0011_0000)
     HAL.init()
+    /*while (true) {
+        Time.sleep(100)
         val read = KBD.getKey()
+        if (read != ' ')
         println(read)
+    }
+     */
+    while (true){
+        val read = KBD.waitKey(17345524000)
+        println(read)
+    }
 
 }
 
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
-    const val NONE = 0;
+   // const val NONE = 0;
     const val CLR_ALL_BITS = 0b1111_1111
-    const val READ_BITS = 0b0000_1111
+    //const val READ_BITS = 0b0000_1111
     const val SET_ACK_1 = 0b1000_0000
-       const val CHECKBIT = 0b0001_0000
+    const val CHECKBIT = 0b0001_0000
    // const val CHECKBIT = 0b0000_0001
-    private val digitArray = "147*2580369#    ".toCharArray()
+    private val digitArray = "147*2580369#    "
     const val NONERETURN = ' '
 
     // Inicia a classe
@@ -31,12 +42,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
         if (HAL.isBit(CHECKBIT) ) {
             val tecla = HAL.readBits(0b0000_1111)
             HAL.setBits(SET_ACK_1)
-            while (!HAL.isBit(0b0001_0000)){
-                HAL.clrBits(SET_ACK_1)
-                return digitArray[tecla]
-            }
-
-
+            HAL.clrBits(SET_ACK_1)
+            return digitArray[tecla]
         }
         return NONERETURN
     }
@@ -45,6 +52,10 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     fun waitKey(timeout: Long): Char {
         val time  = Time.getTimeInMillis()
         val tecla = getKey()
-        return if (time > timeout) tecla else NONERETURN
+        while (time > timeout){
+            val tecla = getKey()
+            if (tecla != ' ') return tecla
+        }
+        return NONERETURN
     }
 }

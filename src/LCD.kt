@@ -5,7 +5,6 @@ var pos = true// true == linha de cima
 fun main() {
     HAL.init()
     LCD.init()
-    LCD.write("001d")
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
@@ -74,7 +73,8 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia a sequência de iniciação para comunicação a 4 bits.
     fun init() {
-        Time.sleep(16)
+        /*
+        Time.sleep(18)
         //writeCMD(0b1111_1100)
         writeCMD(0b0011_0000)
         Time.sleep(5)
@@ -83,12 +83,42 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         writeCMD(0b0011_0000)
 
         writeCMD(0b0011_1000)
+        Time.sleep(2)
         writeCMD(0b0000_1000)//display off
+        Time.sleep(2)
         writeCMD(0b0000_0001)//display clear
         Time.sleep(2)
         writeCMD(0b0000_0110)//mode set
 
-        writeCMD(0b0000_1111)//lcd on*/
+         */
+
+
+
+
+        //seguindo os valores que estao no LCD
+        Time.sleep(18)
+        //writeCMD(0b1111_1100)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
+        Time.sleep(50)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
+        Time.sleep(10)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
+        Time.sleep(10)
+
+
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_1000_0,9)
+        Time.sleep(20)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_1000_0,9)//display off
+        Time.sleep(20)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_0001_0,9)//display clear
+        Time.sleep(20)
+        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_0110_0,9)//mode set
+        Time.sleep(20)
+
+
+
+
+
 
     }
 

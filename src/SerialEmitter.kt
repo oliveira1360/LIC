@@ -17,9 +17,9 @@ fun main() {
 
 object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiver.
 
-    val LCDsel = 0x01
-    val SCLK = 0x02 //10
-    val SDX = 0x04 //08
+    val LCDsel = 0x02 //02 socre // 01 LCD
+    val SCLK = 0x10 //10 sim    02 placa
+    val SDX = 0x08 //08 sim     04 placa
 
     enum class Destination {LCD, SCORE}
 

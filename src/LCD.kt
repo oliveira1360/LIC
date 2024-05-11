@@ -3,12 +3,15 @@ import isel.leic.utils.Time
 var pos = true// true == linha de cima
 
 fun main() {
+    HAL.init()
     LCD.init()
+    LCD.write("001d")
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
-    private const val SERIAL_INTERFACE = true
+    private const val SERIAL_INTERFACE = false
+
 
     const val DATA_MASK = 0x0F
     const val RS_MASK = 0x40
@@ -72,8 +75,9 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Envia a sequência de iniciação para comunicação a 4 bits.
     fun init() {
         Time.sleep(16)
+        //writeCMD(0b1111_1100)
         writeCMD(0b0011_0000)
-        /*Time.sleep(5)
+        Time.sleep(5)
         writeCMD(0b0011_0000)
         Time.sleep(1)
         writeCMD(0b0011_0000)

@@ -5,6 +5,7 @@ var pos = true// true == linha de cima
 fun main() {
     HAL.init()
     LCD.init()
+    Time.sleep(18)
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2

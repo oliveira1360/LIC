@@ -9,7 +9,7 @@ fun main() {
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
-    private const val SERIAL_INTERFACE = false
+    private const val SERIAL_INTERFACE = true
 
 
     const val DATA_MASK = 0x0F
@@ -73,52 +73,26 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia a sequência de iniciação para comunicação a 4 bits.
     fun init() {
-        /*
+
         Time.sleep(18)
-        //writeCMD(0b1111_1100)
-        writeCMD(0b0011_0000)
+        writeByte(false, 0b0011_1111)
         Time.sleep(5)
-        writeCMD(0b0011_0000)
+        writeByte(false, 0b0011_0000)
         Time.sleep(1)
-        writeCMD(0b0011_0000)
-
-        writeCMD(0b0011_1000)
+        writeByte(false, 0b0011_0000)
+        Time.sleep(1)
+        writeByte(false, 0b0011_1000)
         Time.sleep(2)
-        writeCMD(0b0000_1000)//display off
+        writeByte(false, 0b0000_1000)
         Time.sleep(2)
-        writeCMD(0b0000_0001)//display clear
+        writeByte(false, 0b0000_0001)//display off
         Time.sleep(2)
-        writeCMD(0b0000_0110)//mode set
-
-         */
-
-
-
-
-        //seguindo os valores que estao no LCD
-        Time.sleep(18)
-        //writeCMD(0b1111_1100)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
-        Time.sleep(50)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
-        Time.sleep(10)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_0000_0,9)
-        Time.sleep(10)
-
-
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0011_1000_0,9)
-        Time.sleep(20)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_1000_0,9)//display off
-        Time.sleep(20)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_0001_0,9)//display clear
-        Time.sleep(20)
-        SerialEmitter.send(SerialEmitter.Destination.LCD,0b0000_0110_0,9)//mode set
-        Time.sleep(20)
-
-
-
-
-
+        writeByte(false, 0b0000_0110)//display clear
+        Time.sleep(2)
+        writeByte(false, 0b0000_0110)//mode set
+        Time.sleep(2)
+        writeByte(false, 0b0000_1111)//piscar o ecra
+        Time.sleep(2)
 
     }
 

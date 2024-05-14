@@ -1,14 +1,17 @@
 
-
+const val UPTADE_SCORE = 0b1010_110
 fun main(){
     HAL.init()
     SerialEmitter.init()
     ScoreDisplay.setScore(0b0001_000)
+    ScoreDisplay.setScore(UPTADE_SCORE)    //uptade
     ScoreDisplay.setScore(0b0010_001)
     ScoreDisplay.setScore(0b0011_010)
 
     ScoreDisplay.setScore(0b1001_011)
-    ScoreDisplay.setScore(0b1010_110)    //uptade
+    ScoreDisplay.setScore(UPTADE_SCORE)    //uptade
+
+
 
 
 

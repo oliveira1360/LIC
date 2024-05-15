@@ -1,19 +1,16 @@
 
 const val UPTADE_SCORE = 0b1010_110
+const val SCORE_ON = 0b0000_111
+const val SCORE_OFF = 0b0001_111
 fun main(){
-    HAL.init()
     SerialEmitter.init()
+    ScoreDisplay.init()
     ScoreDisplay.setScore(0b0001_000)
-    ScoreDisplay.setScore(UPTADE_SCORE)    //uptade
     ScoreDisplay.setScore(0b0010_001)
     ScoreDisplay.setScore(0b0011_010)
 
     ScoreDisplay.setScore(0b1001_011)
     ScoreDisplay.setScore(UPTADE_SCORE)    //uptade
-
-
-
-
 
 }
 
@@ -23,7 +20,7 @@ object ScoreDisplay { // Controla o mostrador de pontuação.
     // Inicia a classe, estabelecendo os valores iniciais.
 
     fun init() {
-
+        setScore(SCORE_ON)
     }
 
 
@@ -36,7 +33,7 @@ object ScoreDisplay { // Controla o mostrador de pontuação.
 
     // Envia comando para desativar/ativar a visualização do mostrador de pontuação
     fun off(value: Boolean) {
-        return if (value) setScore( 0b0001_111)
-        else setScore( 0b0000_111)
+        return if (value) setScore(SCORE_OFF)
+        else setScore(SCORE_ON)
     }
 }

@@ -1,11 +1,14 @@
 import isel.leic.utils.Time
 
 var pos = true// true == linha de cima
+const val CLR_BITS_LCD = 0b0000_0001
 
 fun main() {
     HAL.init()
     LCD.init()
-    Time.sleep(18)
+    LCD.write("aaa")
+    LCD.cursor(1,15)
+    LCD.write('b')
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val LINES = 2
@@ -46,13 +49,13 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Escreve um byte de comando/dados no LCD em série
     private fun writeByteSerial(rs: Boolean, data: Int) {
         if (rs)
-            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1) + 1, 9)
+            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1) + 1, 9)// shift e adiciona 1 apara que o bit de menor peso seja 1
         else
             SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1), 9)
     }
 
 
-        // Escreve um byte de comando/dados no LCD
+    // Escreve um byte de comando/dados no LCD
     private fun writeByte(rs: Boolean, data: Int) {
         if (SERIAL_INTERFACE)
             writeByteSerial(rs,data)
@@ -76,23 +79,23 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun init() {
 
         Time.sleep(18)
-        writeByte(false, 0b0011_1111)
+        writeCMD( 0b0011_1111)
         Time.sleep(5)
-        writeByte(false, 0b0011_0000)
+        writeCMD( 0b0011_0000)
         Time.sleep(1)
-        writeByte(false, 0b0011_0000)
+        writeCMD(  0b0011_0000)
         Time.sleep(1)
-        writeByte(false, 0b0011_1000)
+        writeCMD(0b0011_1000)
         Time.sleep(2)
-        writeByte(false, 0b0000_1000)
+        writeCMD(0b0000_1000)
         Time.sleep(2)
-        writeByte(false, 0b0000_0001)//display off
+        writeCMD(0b0000_0001)//display off
         Time.sleep(2)
-        writeByte(false, 0b0000_0110)//display clear
+        writeCMD(  0b0000_0110)//display clear
         Time.sleep(2)
-        writeByte(false, 0b0000_0110)//mode set
+        writeCMD(  0b0000_0110)//mode set
         Time.sleep(2)
-        writeByte(false, 0b0000_1111)//piscar o ecra
+        writeCMD( 0b0000_1111)//piscar o ecra
         Time.sleep(2)
 
     }
@@ -114,22 +117,14 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
 
     // Envia comando para posicionar cursor (‘line’:0..LINES-1 , ‘column’:0..COLS-1)
     fun cursor(line: Int, column: Int) {
-
-        val new_pos = ((line - 1) * 40) + column
-
-        clear()//display clear
-        for (i in 0 until new_pos - 1)
-            write(' ')
-
-
-        //writeCMD(0b0010 + new_pos)//display clear
-
-
+        val new_pos = (line * 64) + column
+        writeByte(false, 0b1000_0000 + new_pos)
+        Time.sleep(2)
     }
 
     // Envia comando para limpar o ecrã e posicionar o cursor em (0,0)
     fun clear() {
-        writeCMD(0b0000_0001)//display clear
+        writeCMD(CLR_BITS_LCD)//display clear
         Time.sleep(2)
     }
 }

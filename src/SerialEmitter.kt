@@ -16,24 +16,23 @@ fun main() {
 
 object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiver.
 
-    val LCDsel = 0x01 //02 socre // 01 LCD
-    val SCLK = 0x002 //10 sim    02 placa
-    val SDX = 0x04 //08 sim     04 placa
+    val SCLK = 0x10 //10 sim    02 placa
+    val SDX = 0x08 //08 sim     04 placa
 
     enum class Destination {LCD, SCORE}
 
     // Inicia a classe
     fun init() {
-        HAL.setBits(LCDsel)
-
 
     }
 
     // Envia uma trama para o SerialReceiver identificado o destino em addr,os bits de dados em ‘data’ e em size o número de bits a enviar.
     fun send(addr: Destination, data: Int, size : Int) {
-
-        //usar o hal
         //bit, 0 = par, 1 = impar
+
+        val LCDsel  = if (addr == Destination.LCD) 0x01 else 0x02
+
+
 
         var valor = 0
         var left = data

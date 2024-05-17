@@ -1,8 +1,7 @@
-const val TIME = 1715857142087
 
 
 fun main() {
-
+/*
     HAL.init()
     KBD.init()
     LCD.init()
@@ -23,4 +22,6 @@ fun main() {
         } else if (key == '*')
             LCD.clear()
     }
+
+ */
 }

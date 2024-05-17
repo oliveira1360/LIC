@@ -1,7 +1,6 @@
 
 const val UPTADE_SCORE = 0b1010_110
-const val SCORE_ON = 0b0000_111
-const val SCORE_OFF = 0b0001_111
+
 fun main(){
     SerialEmitter.init()
     ScoreDisplay.init()
@@ -16,9 +15,11 @@ fun main(){
 
 object ScoreDisplay { // Controla o mostrador de pontuação.
     // Inicia a classe, estabelecendo os valores iniciais.
+    private const val SCORE_ON = 0b0000_111
+    private const val SCORE_OFF = 0b0001_111
 
     fun init() {
-        setScore(SCORE_ON)
+        off(false)
     }
 
 

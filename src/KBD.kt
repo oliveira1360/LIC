@@ -1,19 +1,7 @@
 
 import isel.leic.utils.Time
-import kotlin.concurrent.thread
 
-//corrigir tudo
 fun main() {
-
-    //LCD.writeByteParallel(false,0b0011_0000)
-    HAL.init()
-    /*while (true) {
-        Time.sleep(100)
-        val read = KBD.getKey()
-        if (read != ' ')
-        println(read)
-    }
-     */
     while (true){
         val read = KBD.waitKey(17345524000)
         println(read)
@@ -23,14 +11,11 @@ fun main() {
 
 
 object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ ou NONE.
-   // const val NONE = 0;
-    const val CLR_ALL_BITS = 0b1111_1111
-    //const val READ_BITS = 0b0000_1111
-    const val SET_ACK_1 = 0b1000_0000
-    const val CHECKBIT = 0b0001_0000
-   // const val CHECKBIT = 0b0000_0001
+    private const val CLR_ALL_BITS = 0b1111_1111
+    private const val SET_ACK_1 = 0b1000_0000
+    private const val CHECKBIT = 0b0001_0000
     private val digitArray = "147*2580369#    "
-    const val NONERETURN = ' '
+    private const val NONERETURN = ' '
 
     // Inicia a classe
     fun init() {

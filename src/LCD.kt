@@ -1,16 +1,12 @@
 import isel.leic.utils.Time
 
-var pos = true// true == linha de cima
-const val CLR_BITS_LCD = 0b0000_0001
 
 fun main() {
     HAL.init()
     LCD.init()
-    LCD.write("aaa")
-    LCD.cursor(1,15)
-    LCD.write('b')
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
+    private const val CLR_BITS_LCD = 0b0000_0001
     private const val LINES = 2
     private const val COLS = 16 // Dimensão do display.
     private const val SERIAL_INTERFACE = true
@@ -37,7 +33,6 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         HAL.setBits(CLK_REG_MASK) //clock
         HAL.clrBits(CLK_REG_MASK)
 
-        //val low = data.and(DATA_MASK)
         HAL.clrBits(DATA_MASK) //
         HAL.writeBits(DATA_MASK, data) //write lowbits
         HAL.setBits(CLK_REG_MASK) //clock
@@ -95,6 +90,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         Time.sleep(2)
         writeCMD(  0b0000_0110)//mode set
         Time.sleep(2)
+        writeByte(false, 0b0001_1111)
         writeCMD( 0b0000_1111)//piscar o ecra
         Time.sleep(2)
 

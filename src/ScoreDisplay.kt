@@ -10,11 +10,9 @@ fun main(){
     ScoreDisplay.setScore(0b0011_010)
 
     ScoreDisplay.setScore(0b1001_011)
-    ScoreDisplay.setScore(UPTADE_SCORE)    //uptade
+    ScoreDisplay.setScore(UPTADE_SCORE)    //update
 
 }
-
-
 
 object ScoreDisplay { // Controla o mostrador de pontuação.
     // Inicia a classe, estabelecendo os valores iniciais.
@@ -35,5 +33,6 @@ object ScoreDisplay { // Controla o mostrador de pontuação.
     fun off(value: Boolean) {
         return if (value) setScore(SCORE_OFF)
         else setScore(SCORE_ON)
+
     }
 }

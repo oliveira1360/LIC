@@ -1,16 +1,18 @@
 import isel.leic.utils.Time
 
 
-const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
-const val TIME_TO_SPAWN = 1800L
-const val POS_INICIAL = 15
-const val SPEED_FACTOR = 50
-const val SPEED_DIFF = 400
+private const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
+private const val TIME_TO_SPAWN = 1800L
+private const val POS_INICIAL = 15
+private const val SPEED_FACTOR = 50
+private const val SPEED_DIFF = 400
+private const val ROTATE_SCORE_DISPLAY_SPEED = 900L
 
 
 fun main() {
 
         callInits()//inicilizacao da main
+        apresentcionBegin()
         val DIGIGIT_ARRAY_IN_INT = arrayOf(1,4,7,2,5,8,0,3,6,9)
         val mutableListTop = mutableListOf<Int>()
         val mutableListBottom = mutableListOf<Int>()
@@ -19,28 +21,23 @@ fun main() {
         var Speed = 0
         var linha0 = ""
         var linha1 = ""
-        var Pos1 = POS_INICIAL
-        var Pos2 = POS_INICIAL
         var ultimaTecla = ' '
         var score = 0
         var lastPos = 0
-        ScoreDisplay.setScore(0b0001_000)
 
-        while (Pos1 > 0 && Pos2 > 0){
+        while (linha0.length < 13 && linha1.length < 13){
                 val random= (0..9).random()
                 if (random > 4) {
+                        LCD.cursor(0, POS_INICIAL - linha0.length)
                         linha0 += DIGIGIT_ARRAY_IN_CHAR[random]
                         mutableListTop += DIGIGIT_ARRAY_IN_INT[random]
-                        LCD.cursor(0, Pos1)
                         LCD.write(linha0)
-                        Pos1--
                 }
                 else {
-                        LCD.cursor(1, Pos2)
+                        LCD.cursor(1, POS_INICIAL - linha1.length)
                         linha1 += DIGIGIT_ARRAY_IN_CHAR[random]
                         mutableListBottom += DIGIGIT_ARRAY_IN_INT[random]
                         LCD.write(linha1)
-                        Pos2--
                 }
                 var timePC = Time.getTimeInMillis()
                 val timeUntilSpawn = timePC + TIME_TO_SPAWN - Speed
@@ -53,22 +50,20 @@ fun main() {
 
                                 if (lastPos == 0) {
                                         if (ultimaTecla == linha0[0]) {
-                                                linha0 = linha0.substring(1)
-                                                Pos1++
+                                                linha0 = linha0.substring(1)// remocer o mostro morto
                                                 score += mutableListTop[0] + 1
                                                 mutableListTop.removeAt(0)
                                                 separarDigitos(score)
-                                                cleanKillMoster(Pos1, 0)
+                                                cleanKillMoster(POS_INICIAL - linha0.length, 0)
                                         }
                                 }
                                 else{
                                         if (ultimaTecla == linha1[0]) {
-                                                linha1 = linha1.substring(1)
-                                                Pos2++
+                                                linha1 = linha1.substring(1)// remocer o mostro morto
                                                 score += mutableListBottom[0] + 1
                                                 mutableListBottom.removeAt(0)
                                                 separarDigitos(score)
-                                                cleanKillMoster(Pos2, 1)
+                                                cleanKillMoster(POS_INICIAL - linha1.length, 1)
 
                                         }
                                 }
@@ -123,8 +118,9 @@ fun separarDigitos(numero: Int) {
 fun updateScore(list: List<Int>){
         for (i in 0 until list.size){
                 ScoreDisplay.setScore(i or list[i].shl(3))//move 3 bits para a esqierda o valor e mete a pos == i, para seguir o protocolo
+                Time.sleep(2)
         }
-        ScoreDisplay.setScore(UPTADE_SCORE)    //update
+        ScoreDisplay.setScore(UPTADE_SCORE)
 }
 
 fun playerVision(l: Int, c:Int){
@@ -139,6 +135,8 @@ fun callInits(){
         KBD.init()
         SerialEmitter.init()
         SerialEmitter.init()
+        ScoreDisplay.setScore(0b0001_000)
+
 }
 
 
@@ -146,5 +144,37 @@ fun cleanKillMoster(end:Int, l: Int){
         LCD.cursor(l, end)
         LCD.write(' ')
         LCD.cursor(l, 1)
+}
+
+fun apresentcionBegin(){
+        LCD.init()
+        LCD.cursor(0,1)
+        LCD.write("space invaders")
+        LCD.cursor(1,1)
+        LCD.write("game")
+        LCD.cursor(1,14)
+        LCD.write("12")
+
+        var tempo = Time.getTimeInMillis() + ROTATE_SCORE_DISPLAY_SPEED
+        var tecla = KBD.waitKey(tempo)
+        var list = listOf(10,11,12,13,14,15)
+        while (tecla != '#'){
+                updateScore(list)
+                tecla = KBD.waitKey(tempo)
+                list = rotateListRight(list)
+                updateScore(list)
+                tempo = Time.getTimeInMillis() + ROTATE_SCORE_DISPLAY_SPEED
+        }
+        LCD.clear()
+        updateScore(listOf(0,0,0,0,0,0))
+
+
+
+}
+fun rotateListRight(list: List<Int>): List<Int> {
+        if (list.isEmpty()) return list
+        val lastElement = list.last()
+        val subList = list.dropLast(1)
+        return listOf(lastElement) + subList
 }
 

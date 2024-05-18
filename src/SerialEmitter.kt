@@ -16,8 +16,8 @@ fun main() {
 
 object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiver.
 
-    val SCLK = 0x10 //10 sim    02 placa
-    val SDX = 0x08 //08 sim     04 placa
+   private const val SCLK = 0x10 //10 sim    02 placa
+   private const val SDX = 0x08 //08 sim     04 placa
 
     enum class Destination {LCD, SCORE}
 
@@ -28,7 +28,6 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
     // Envia uma trama para o SerialReceiver identificado o destino em addr,os bits de dados em ‘data’ e em size o número de bits a enviar.
     fun send(addr: Destination, data: Int, size : Int) {
-        //bit, 0 = par, 1 = impar
 
         val LCDsel  = if (addr == Destination.LCD) 0x01 else 0x02
 
@@ -41,35 +40,25 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             left = left shr 1 // Right shift para conseguir o proximo bit
         }
 
-        val paridade = if (valor == 1) 1 else 0
+        val paridade = if (valor == 1) 1 else 0 //bit, 0 = par, 1 = impar
 
-        //val withParaty =  data
-
-        var mandar = data
-
+        var send = data
 
         HAL.clrBits(LCDsel)
 
-
         for (i in size  downTo 1) {
-                    if (mandar%2 != 0)
-                        HAL.setBits(SDX)
-                    else
-                        HAL.clrBits(SDX)
-            mandar = mandar.shr(1)
+            if (send%2 != 0) HAL.setBits(SDX) else HAL.clrBits(SDX)
+            send = send.shr(1)//para ver o proximo bit
             clock()
-            }
-            if (paridade == 1)
-                HAL.setBits(SDX)
-            else
-                HAL.clrBits(SDX)
+        }
+            if (paridade == 1) HAL.setBits(SDX) else HAL.clrBits(SDX)
             clock()
             HAL.setBits(LCDsel)
 
     }
 
     fun clock(){
-        HAL.setBits(SCLK) //clock
+        HAL.setBits(SCLK)
         HAL.clrBits(SCLK)
     }
 

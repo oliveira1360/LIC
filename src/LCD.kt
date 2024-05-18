@@ -4,6 +4,8 @@ import isel.leic.utils.Time
 fun main() {
     HAL.init()
     LCD.init()
+
+
 }
 object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val CLR_BITS_LCD = 0b0000_0001

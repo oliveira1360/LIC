@@ -1,8 +1,7 @@
-const val TIME = 17345524000
 
 
 fun main() {
-
+/*
     HAL.init()
     KBD.init()
     LCD.init()
@@ -14,14 +13,15 @@ fun main() {
             LCD.write(key)
         else if (key == '#') {
             if (pos) {
-                LCD.cursor(1, 1)
+                LCD.cursor(0, 0)
                 pos = false
-            }
-            else{
-                LCD.cursor(2, 1)
-               pos = true
+            } else {
+                LCD.cursor(1, 0)
+                pos = true
             }
         } else if (key == '*')
             LCD.clear()
     }
+
+ */
 }

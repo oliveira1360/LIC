@@ -4,6 +4,23 @@ import isel.leic.utils.Time
 fun main() {
     HAL.init()
     LCD.init()
+    val smiley = byteArrayOf(// a forma como aparece no ecra
+        0b11110,//primeira linha no LCD
+        0b11000,//segunda linha ...
+        0b11100,
+        0b11111,
+        0b11100,
+        0b11000,
+        0b11110,
+        0b00000 // ultima linha
+    )
+
+    LCD.createCustomChar(0, smiley)
+    LCD.cursor(0, 0)
+    LCD.writeCustomChar(0)
+
+
+
 
 
 }
@@ -92,8 +109,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         Time.sleep(2)
         writeCMD(  0b0000_0110)//mode set
         Time.sleep(2)
-        writeByte(false, 0b0001_1111)
-        writeCMD( 0b0000_1111)//piscar o ecra
+        writeCMD( 0b0000_1100)//piscar o ecra
         Time.sleep(2)
 
     }
@@ -124,5 +140,19 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun clear() {
         writeCMD(CLR_BITS_LCD)//display clear
         Time.sleep(2)
+    }
+
+    //escreve na memroria CGRAM o caracter
+    fun createCustomChar(location: Int, charMap: ByteArray) {
+        val cgramAddress = 0x40 or (location shl 3)//0x40 == possicao inical, 0001_----_- //shift = 3 para que a localizacao sej a certa
+        writeCMD(cgramAddress)
+        for (i in charMap.indices) {
+            writeDATA(charMap[i].toInt())
+        }
+    }
+
+    //vai buscar a meoria o caracter que tem de "dessenhar"
+    fun writeCustomChar(location: Int) {
+        writeDATA(location)
     }
 }

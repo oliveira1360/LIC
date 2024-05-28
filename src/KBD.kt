@@ -15,7 +15,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     private const val CLR_ALL_BITS = 0b1111_1111
     private const val SET_ACK_1 = 0b1000_0000
     private const val CHECKBIT = 0b0001_0000
-    private val digitArray = "147*2580369#    "
+    private val digitArray = "147*2580369#"
     private const val NONERETURN = ' '
 
     // Inicia a classe

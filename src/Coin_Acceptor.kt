@@ -7,7 +7,9 @@ private const val Coin = 0b0100_0000
 fun main(){
     HAL.init()
     LCD.init()
-    Coin_Acceptor.read_coin()
+
+        Coin_Acceptor.read_coin()
+
 }
 
 object Coin_Acceptor {
@@ -15,7 +17,7 @@ object Coin_Acceptor {
         val teste = HAL.readBits(Coin)
         if (teste != 0) {
             HAL.setBits(Coin)
-            HAL.clrBits(Coin)
+            if (!HAL.isBit(Coin)) HAL.clrBits(Coin)
             return true
         }
         return false

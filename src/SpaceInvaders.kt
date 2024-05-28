@@ -11,11 +11,17 @@ private const val ROTATE_SCORE_DISPLAY_SPEED = 900L
 
 
 fun main() {
-        while (true){
-                game()
+        callInits()//inicilizacao da main
+        var coin = 0
+        coin = apresentcionBegin(coin)
+        var first = true
+        while (coin > 0){
+                coin = game(coin, read_mode(), first)
+                first = false
         }
+
 }
-fun game(){
+fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         val smiley = byteArrayOf(
                 0b11110,
                 0b11000,
@@ -36,10 +42,15 @@ fun game(){
                 0b00100,
                 0b00100
         )
+        LCD.clear()
+        TUI.updateScore(listOf(0,0,0,0,0,0))
+        LCD.cursor(0, 0)
+        LCD.write(']')
+        LCD.cursor(1, 0)
+        LCD.write(']')
 
-
-        callInits()//inicilizacao da main
-        apresentcionBegin()
+        var coin = coin
+        if (!first)coin = apresentcionBegin(coin)
         val DIGIGIT_ARRAY_IN_INT = arrayOf(1,4,7,2,5,8,0,3,6,9)
         val mutableListTop = mutableListOf<Int>()
         val mutableListBottom = mutableListOf<Int>()
@@ -117,9 +128,8 @@ fun game(){
         LCD.cursor(1, 0)
         LCD.write("score: " + score)
         Time.sleep(4000)
-
-
-
+        if (!mode)coin -= 2
+        return coin
 }
 fun callInits(){
         HAL.init()
@@ -131,30 +141,40 @@ fun callInits(){
 
 }
 
-fun apresentcionBegin(){
+fun apresentcionBegin(coin: Int ):Int{
         LCD.init()
         ScoreDisplay.init()
         LCD.cursor(0,1)
         LCD.write("space invaders")
         LCD.cursor(1,1)
         LCD.write("game")
-        LCD.cursor(1,14)
-        LCD.write("12")
 
         var tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
         var list = listOf(10,11,12,13,14,15)
-        while (tecla != '*'){
+        var totalCoin = coin
+        while (tecla != '*' || coin < 0){
+                if (Coin_Acceptor.read_coin()) totalCoin += 2
                 TUI.updateScore(list)
                 tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
                 list = TUI.rotateListRight(list)
                 TUI.updateScore(list)
+                LCD.cursor(1,14)
+                LCD.write("" + totalCoin)
+                if (tecla == '*' && coin == 0){
+                        LCD.clear()
+                        LCD.cursor(0,1)
+                        LCD.write("Insert coin")
+                        Time.sleep(1500)
+                        tecla = ' '
+                }
+                LCD.cursor(0,1)
+                LCD.write("space invaders")
+                LCD.cursor(1,1)
+                LCD.write("game")
+
+
         }
-        LCD.clear()
-        TUI.updateScore(listOf(0,0,0,0,0,0))
-        LCD.cursor(0, 0)
-        LCD.write(']')
-        LCD.cursor(1, 0)
-        LCD.write(']')
+        return  totalCoin
 
 
 

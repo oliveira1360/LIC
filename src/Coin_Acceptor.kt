@@ -3,21 +3,21 @@ import isel.leic.utils.Time
 
 private const val Coin = 0b0100_0000
 
-fun main() {
+
+fun main(){
     HAL.init()
     LCD.init()
-    Coin_Acceptor.readCoin()
+    Coin_Acceptor.read_coin()
 }
 
 object Coin_Acceptor {
-
-    fun readCoin() {
+    fun read_coin(): Boolean{
         val teste = HAL.readBits(Coin)
         if (teste != 0) {
             HAL.setBits(Coin)
-            Time.sleep(2)
             HAL.clrBits(Coin)
+            return true
         }
-
+        return false
     }
 }

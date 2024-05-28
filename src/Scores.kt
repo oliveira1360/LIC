@@ -1,6 +1,6 @@
-const val FILE = "SIG_scores.txt"
+private const val FILE = "SIG_scores.txt"
 fun main() {
-    Scores.addScores(FILE, Scores.Score("0", "Diogo"))
+    Scores.addScores(FILE, Scores.Score("70", "batata"))
 }
 object Scores{
     data class Score(val score:String, val name:String)
@@ -18,12 +18,20 @@ object Scores{
     fun addScores(inputFile: String, newScore: Score){
         val receiveList = emptyList<Score>().toMutableList()
         getScores(inputFile, receiveList)
-        receiveList.add(newScore)
+        if (receiveList.size < 6) receiveList.add(newScore)
+        else{
+            val ele = receiveList.lastOrNull {it.score.toInt() < newScore.score.toInt()}
+            if (ele != null){
+                receiveList.remove(ele)
+                receiveList.add(newScore)
+            }
+
+        }
         receiveList.sortByDescending { it.score.toInt() }
-        println(receiveList)
         FileAccess.FileClear(inputFile)
         receiveList.forEach {
             FileAccess.fileWrite(it.score + ";" + it.name, inputFile)
+            println(it)
         }
 
     }

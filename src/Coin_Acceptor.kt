@@ -1,21 +1,23 @@
-
-
+import isel.leic.utils.Time
 
 
 private const val Coin = 0b0100_0000
 
-
-fun main(){
-    ler()
+fun main() {
+    HAL.init()
+    LCD.init()
+    Coin_Acceptor.readCoin()
 }
 
-fun ler(){
-    var total = 0
-    while (total < 3) {
-        val teste =  HAL.readBits(0b0100_0000)
-        total += (teste + 1)/ 64
-        //dar reset ao sinal
-        println(teste)
+object Coin_Acceptor {
+
+    fun readCoin() {
+        val teste = HAL.readBits(Coin)
+        if (teste != 0) {
+            HAL.setBits(Coin)
+            Time.sleep(2)
+            HAL.clrBits(Coin)
+        }
+
     }
-    println("fim")
 }

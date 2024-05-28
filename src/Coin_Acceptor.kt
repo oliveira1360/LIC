@@ -2,6 +2,8 @@ import isel.leic.utils.Time
 
 
 private const val Coin = 0b0100_0000
+private const val ECoin = 0b01000_0000
+
 
 
 fun main(){
@@ -13,13 +15,19 @@ fun main(){
 }
 
 object Coin_Acceptor {
+    var flag = false
     fun read_coin(): Boolean{
-        val teste = HAL.readBits(Coin)
-        if (teste != 0) {
+
+        if (HAL.isBit(Coin)) {
             HAL.setBits(Coin)
-            if (!HAL.isBit(Coin)) HAL.clrBits(Coin)
+            flag = true
+        } else if (!HAL.isBit(Coin) && flag){
+            HAL.clrBits(Coin)
+            flag = false
             return true
         }
+
         return false
+
     }
 }

@@ -165,12 +165,14 @@ fun apresentcionBegin(coin: Int ):Int{
                         LCD.cursor(0,1)
                         LCD.write("Insert coin")
                         Time.sleep(1500)
-                        tecla = ' '
+                        tecla = 'p'
                 }
-                LCD.cursor(0,1)
-                LCD.write("space invaders")
-                LCD.cursor(1,1)
-                LCD.write("game")
+                if(tecla != 'p') {
+                        LCD.cursor(0, 1)
+                        LCD.write("space invaders")
+                        LCD.cursor(1, 1)
+                        LCD.write("game")
+                }
 
 
         }

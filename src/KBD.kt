@@ -3,7 +3,8 @@ import isel.leic.utils.Time
 
 fun main() {
     while (true){
-        val read = KBD.waitKey(17345524000)
+        val read = KBD.getKey()
+        if (read != ' ')
         println(read)
     }
 
@@ -14,7 +15,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     private const val CLR_ALL_BITS = 0b1111_1111
     private const val SET_ACK_1 = 0b1000_0000
     private const val CHECKBIT = 0b0001_0000
-    private val digitArray = "147*2580369#    "
+    private val digitArray = "147*2580369#"
     private const val NONERETURN = ' '
 
     // Inicia a classe
@@ -27,6 +28,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
         if (HAL.isBit(CHECKBIT) ) {
             val tecla = HAL.readBits(0b0000_1111)
             HAL.setBits(SET_ACK_1)
+            while(HAL.isBit(CHECKBIT));
             HAL.clrBits(SET_ACK_1)
             return digitArray[tecla]
         }
@@ -36,7 +38,8 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     // Retorna a tecla premida, caso ocorra antes do ‘timeout’ (representado em milissegundos), ou NONE caso contrário.
     fun waitKey(timeout: Long): Char {
         var time  = Time.getTimeInMillis()
-        while (time < timeout){
+        val timeWait = Time.getTimeInMillis() + timeout
+        while (time < timeWait){
             val tecla = getKey()
             if (tecla != ' ') return tecla
             time  = Time.getTimeInMillis()

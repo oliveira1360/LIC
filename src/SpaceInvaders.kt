@@ -6,7 +6,9 @@ private const val TIME_TO_SPAWN = 1800L
 private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
-private const val ROTATE_SCORE_DISPLAY_SPEED = 900L
+private const val ROTATE_SCORE_DISPLAY_SPEED = 700L
+var games = 0
+var moedas = 0
 
 
 
@@ -16,12 +18,13 @@ fun main() {
         coin = apresentcionBegin(coin)
         var first = true
         while (coin > 0){
-                coin = game(coin, read_mode(), first)
+                coin = game(coin, false, first)
                 first = false
         }
 
 }
 fun game(coin: Int, mode: Boolean, first: Boolean): Int{
+        var games = 0
         val smiley = byteArrayOf(
                 0b11110,
                 0b11000,
@@ -128,7 +131,11 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         LCD.cursor(1, 0)
         LCD.write("score: " + score)
         Time.sleep(4000)
-        if (!mode)coin -= 2
+        if (!mode){
+                coin -= 2
+                //score add
+                games++
+        }
         return coin
 }
 fun callInits(){
@@ -153,7 +160,10 @@ fun apresentcionBegin(coin: Int ):Int{
         var list = listOf(10,11,12,13,14,15)
         var totalCoin = coin
         while (tecla != '*' || coin < 0){
-                if (Coin_Acceptor.read_coin()) totalCoin += 2
+                if (Coin_Acceptor.read_coin()) {
+                        totalCoin += 2
+                        moedas++
+                }
                 TUI.updateScore(list)
                 tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
                 list = TUI.rotateListRight(list)
@@ -167,17 +177,51 @@ fun apresentcionBegin(coin: Int ):Int{
                         Time.sleep(1500)
                         tecla = 'p'
                 }
-                if(tecla != 'p') {
+                if(tecla != 'p') { //para nao aparcer na placa quando aparece a mensagem "insert coin"
                         LCD.cursor(0, 1)
                         LCD.write("space invaders")
                         LCD.cursor(1, 1)
                         LCD.write("game")
                 }
+                if (read_mode()) mode()
 
 
         }
         return  totalCoin
 
+}
 
+fun mode(){
+        LCD.init()
+        LCD.clear()
+        LCD.cursor(0,0)
+        LCD.write("modo manutencao")
+        TUI.updateScore(listOf(0,0,0,0,0,0))
+        var ultimaTecla = ' '
+        while (read_mode()) {
+                val tecla = KBD.waitKey(10)
+                if (ultimaTecla == '#' && tecla == '*'){
+                        moedas = 0
+                        games = 0
+                }
+                if (tecla != ' ') {
+                        ultimaTecla = tecla
+                }
+                if (tecla == '#'){
+                        print("reza")
+                }
+                if (tecla == '*') game(99, true, false)
+                if (tecla == '1'){
+                        while (true){
+                                val tecla = KBD.waitKey(10)
+                                if (tecla == '3')break;
+                                if (tecla == '2'){
+                                        LCD.clear()
+                                        ScoreDisplay.off(true)
+                                }
 
+                        }
+                }
+
+        }
 }

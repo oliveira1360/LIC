@@ -5,10 +5,12 @@ fun main() {
 
 }
 object FileAccess{
-    fun fileRead(inputFile: String, text : MutableList<String>) {
+    fun fileRead(inputFile: String) : MutableList<String>{
+        val emptyList = emptyList<String>().toMutableList()
         val inFile = File(inputFile)
         val sequence = inFile.readLines()
-        sequence.forEach {text.add(it)}
+        sequence.forEach {emptyList.add(it)}
+        return emptyList
     }
     fun fileWrite(text: String, outputFile: String) {
         val output = FileWriter(outputFile,true)

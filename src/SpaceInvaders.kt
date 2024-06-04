@@ -269,13 +269,13 @@ fun apresentcionBegin(coin: Int ):Int{
                 if (inicialTIme < time) {
                         if (timeUtil <= time) {
                                 if (i == listScores.size * 2 - 1) i = 0
-                                i++
+
                                 LCD.cursor(1, 0)
                                 LCD.write(CLEAN_LINE)
                                 if (i%2 == 0) {
                                         val iList = i /2
                                         LCD.cursor(1, 0)
-                                        LCD.write("0" + iList + "-" + listScores[iList].name)
+                                        LCD.write("0" + (iList + 1) + "-" + listScores[iList].name)
                                         val shift = listScores[iList].score.length - 1
                                         LCD.cursor(1, 15 - shift)
                                         LCD.write(listScores[iList].score)
@@ -293,7 +293,7 @@ fun apresentcionBegin(coin: Int ):Int{
                                         LCD.cursor(1, 13 )
                                         LCD.write("$" + totalCoin  )
                                 }
-
+                                i++
 
 
                                 timeUtil = time + 2600

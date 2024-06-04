@@ -8,11 +8,30 @@ private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
 private const val ROTATE_SCORE_DISPLAY_SPEED = 50L
-private const val CLEAN_LINE = "               "
+private const val CLEAN_LINE = "                "
 var games = 0
 var moedas = 0
 
-
+val ghost = byteArrayOf(
+        0b11111,
+        0b11111,
+        0b10101,
+        0b11111,
+        0b11111,
+        0b10001,
+        0b10001,
+        0b00000
+)
+val smiley = byteArrayOf(
+        0b11110,
+        0b11000,
+        0b11100,
+        0b11111,
+        0b11100,
+        0b11000,
+        0b11110,
+        0b00000
+)
 
 fun main() {
         callInits()//inicilizacao da main
@@ -26,16 +45,6 @@ fun main() {
 
 }
 fun game(coin: Int, mode: Boolean, first: Boolean): Int{
-        val smiley = byteArrayOf(
-                0b11110,
-                0b11000,
-                0b11100,
-                0b11111,
-                0b11100,
-                0b11000,
-                0b11110,
-                0b00000
-        )
         LCD.clear()
         TUI.updateScore(listOf(0,0,0,0,0,0))
         LCD.cursor(0, 0)
@@ -123,8 +132,8 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         LCD.write("score: " + score)
         Time.sleep(4000)
         if (!mode){
-                coin -= 2
-                //score add
+                coin --
+                Scores.addScores(Scores.Score(score.toString(), ""))
                 games++
         }
         return coin
@@ -152,18 +161,36 @@ fun apresentcionBegin(coin: Int ):Int{
         var timeUtil = 0L
         var i = 0
         val listScores = Scores.getScores()
-        val inicialTIme = Time.getTimeInMillis() + 10000
+        var inicialTIme = Time.getTimeInMillis() + 10000
         while (tecla != '*' || coin < 0){
                         if (Coin_Acceptor.read_coin()) {
                                 totalCoin += 2
-                                moedas++
+                                LCD.createCustomChar(1, ghost)
+                                LCD.createCustomChar(1, ghost)
+
+
+                                LCD.cursor(1, 0)
+                                LCD.write(CLEAN_LINE)
+                                LCD.cursor(1, 1)
+                                LCD.write("game " )
+                                LCD.cursor(1, 6)
+                                LCD.writeCustomChar(0)
+                                LCD.cursor(1, 8)
+                                LCD.writeCustomChar(1)
+                                LCD.cursor(1, 10)
+                                LCD.writeCustomChar(1)
+                                LCD.cursor(1, 13 )
+                                LCD.write("" + totalCoin )
+
+
+
+                                        moedas++
+                                inicialTIme = Time.getTimeInMillis() + 1000
                         }
                         TUI.updateScore(list)
                         tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
                         list = TUI.rotateListRight(list)
                         TUI.updateScore(list)
-                        LCD.cursor(1, 14)
-                        LCD.write("" + totalCoin)
                         if (tecla == '*' && totalCoin == 0) {
                                 LCD.clear()
                                 LCD.cursor(0, 1)
@@ -176,20 +203,55 @@ fun apresentcionBegin(coin: Int ):Int{
                                 LCD.write("space invaders")
                         }
                         if (read_mode()) mode()
-                if (timeUtil <= time){
-                        if (i == listScores.size - 1) i = 0
-                        i++
+                if (inicialTIme < time) {
+                        if (timeUtil <= time) {
+                                if (i == listScores.size * 2 - 1) i = 0
+                                i++
+                                LCD.cursor(1, 0)
+                                LCD.write(CLEAN_LINE)
+                                if (i%2 == 0) {
+                                        val iList = i /2
+                                        LCD.cursor(1, 0)
+                                        LCD.write("0" + iList + "-" + listScores[iList].name)
+                                        val shift = listScores[iList].score.length - 1
+                                        LCD.cursor(1, 15 - shift)
+                                        LCD.write(listScores[iList].score)
+                                }else{
+                                        LCD.cursor(1, 0)
+                                        LCD.write(CLEAN_LINE)
+                                        LCD.cursor(1, 1)
+                                        LCD.write("game " )
+                                        LCD.cursor(1, 6)
+                                        LCD.writeCustomChar(0)
+                                        LCD.cursor(1, 8)
+                                        LCD.writeCustomChar(1)
+                                        LCD.cursor(1, 10)
+                                        LCD.writeCustomChar(1)
+                                        LCD.cursor(1, 13 )
+                                        LCD.write("$" + totalCoin  )
+                                }
+
+
+
+                                timeUtil = time + 2600
+                        }
+                }
+                else{
+                        LCD.createCustomChar(0, smiley)
+                        LCD.createCustomChar(1, ghost)
+
                         LCD.cursor(1, 0)
                         LCD.write(CLEAN_LINE)
-                        LCD.cursor(1, 0)
-                        LCD.write("0" + i + "-" + listScores[i].name)
-                        val shift = listScores[i].score.length -1
-                        LCD.cursor(1, 15 - shift)
-                        LCD.write(listScores[i].score)
-
-
-
-                        timeUtil = time + 3600
+                        LCD.cursor(1, 1)
+                        LCD.write("game " )
+                        LCD.cursor(1, 6)
+                        LCD.writeCustomChar(0)
+                        LCD.cursor(1, 8)
+                        LCD.writeCustomChar(1)
+                        LCD.cursor(1, 10)
+                        LCD.writeCustomChar(1)
+                        LCD.cursor(1, 13 )
+                        LCD.write("$" + totalCoin  )
                 }
                 time = Time.getTimeInMillis()
 

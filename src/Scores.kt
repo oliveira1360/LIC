@@ -20,7 +20,7 @@ object Scores{
 
     fun addScores(newScore: Score, inputFile: String= FILE){
         val receiveList = getScores(inputFile)
-        if (receiveList.size < 6) receiveList.add(newScore)
+        if (receiveList.size < 20) receiveList.add(newScore)
         else{
             val ele = receiveList.lastOrNull {it.score.toInt() < newScore.score.toInt()}
             if (ele != null){
@@ -33,7 +33,6 @@ object Scores{
         FileAccess.FileClear(inputFile)
         receiveList.forEach {
             FileAccess.fileWrite(it.score + ";" + it.name, inputFile)
-            println(it)
         }
 
     }

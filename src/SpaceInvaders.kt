@@ -13,7 +13,9 @@ private const val ROTATE_SCORE_DISPLAY_SPEED = 50L
 private const val CLEAN_LINE = "                "
 var games = 0
 var moedas = 0
-data class choseName(val letra: Char, var pos: Int)
+var scoreList = emptyList<Scores.Score>().toMutableList()
+
+data class choseName(val letra: Char, var pos: Int, var end:Boolean = true)
 
 val ghost = byteArrayOf(
         0b11111,
@@ -41,7 +43,7 @@ fun main() {
         var coin = 0
         coin = apresentcionBegin(coin)
         var first = true
-        while (coin > 0){
+        while (true){
                 coin = game(coin, false, first)
                 first = false
         }
@@ -141,7 +143,7 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         val letra = ALPHABET_ARRAY[indice]
         LCD.write(letra)
         LCD.cursor(0, col)
-        var scoreName = mutableListOf(choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0))
+        var scoreName = mutableListOf(choseName('A', 0, false),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0))
         var numberLers = 0
         SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_11110, 9)//piscar o ecra
         while (tecla != '5') {
@@ -151,9 +153,8 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                         LCD.cursor(0, col)
                         LCD.write(ALPHABET_ARRAY[indice])
                         LCD.cursor(0, col)
-                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos)
+                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos, false)
                         scoreName[col - 5].pos++
-                        println(scoreName)
 
 
                 }
@@ -162,9 +163,8 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                         LCD.cursor(0, col)
                         LCD.write(ALPHABET_ARRAY[indice])
                         LCD.cursor(0, col)
-                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos)
+                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos, false)
                         scoreName[col - 5].pos--
-                        println(scoreName)
 
                 }
                 if (tecla == '6' && col in (5..14)){ //andar para a direita
@@ -173,24 +173,22 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                         LCD.write(scoreName[col - 5].letra)
                         LCD.cursor(0, col)
                         numberLers++
-                        println(scoreName)
+                        scoreName[col - 5] = choseName(scoreName[col - 5].letra, scoreName[col - 5].pos, false)
 
                 }
                 if (tecla == '4' && col in (6..15)){ //andar para a esquerda
                         col--
                         LCD.cursor(0, col)
-                        println(scoreName)
 
 
                 }
         }
-        println(scoreName)
         var stringName = ""
-        for (i in 0 .. numberLers){
+        for (i in 0 .. numberLers ){
+                if (scoreName[i].end) break;
                 stringName += scoreName[i].letra
-
         }
-        println(stringName)
+        scoreList.add(Scores.Score( score.toString(), stringName))
         if (!mode){
                 coin --
                 Scores.addScores(Scores.Score(score.toString(), ""))
@@ -365,12 +363,20 @@ fun mode(){
                                 if (tecla != ' ') {
                                         if (tecla == '3'){
                                                 LCD.clear()
-                                                LCD.cursor(0,1)
+                                                LCD.cursor(0,0)
                                                 LCD.write("modo manutencao")
+                                                LCD.cursor(1,0)
+                                                LCD.write("pw:1")
+                                                LCD.cursor(1,5)
+                                                LCD.write("score:#")
                                                 break
                                         };
-                                        if (tecla != '2') {
+                                        if (tecla != '3') {
                                                 LCD.clear()
+                                                for(i in 0 until scoreList.size) {
+                                                        println(scoreList[i])
+                                                        Scores.addScores(scoreList[i])
+                                                }
                                                 ScoreDisplay.off(true)
                                         }
                                 }

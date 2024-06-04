@@ -5,7 +5,7 @@ import kotlin.system.measureTimeMillis
 
 private const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
 private const val ALPHABET_ARRAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-private const val TIME_TO_SPAWN = 1L
+private const val TIME_TO_SPAWN = 500L
 private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
@@ -131,6 +131,10 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                 if (Speed + SPEED_DIFF <= TIME_TO_SPAWN) Speed += SPEED_FACTOR
         }
         //End of the game, score with name added
+        LCD.clear()
+        LCD.write("Game over")
+        Time.sleep(2000)
+        LCD.clear()
         var tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
         LCD.clear()
         LCD.cursor(1, 0)
@@ -372,9 +376,9 @@ fun mode(){
                                                 break
                                         };
                                         if (tecla != '3') {
+                                                println(scoreList)
                                                 LCD.clear()
                                                 for(i in 0 until scoreList.size) {
-                                                        println(scoreList[i])
                                                         Scores.addScores(scoreList[i])
                                                 }
                                                 ScoreDisplay.off(true)

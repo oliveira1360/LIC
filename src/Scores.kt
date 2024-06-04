@@ -32,7 +32,7 @@ object Scores{
         receiveList.sortByDescending { it.score.toInt() }
         FileAccess.FileClear(inputFile)
         receiveList.forEach {
-            FileAccess.fileWrite(it.score + ";" + it.name, inputFile)
+            if (it.name.isNotEmpty()) FileAccess.fileWrite(it.score + ";" + it.name, inputFile)
         }
 
     }

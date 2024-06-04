@@ -3,7 +3,8 @@ import kotlin.system.measureTimeMillis
 
 
 private const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
-private const val TIME_TO_SPAWN = 1800L
+private const val ALPHABET_ARRAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+private const val TIME_TO_SPAWN = 1L
 private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
@@ -11,8 +12,6 @@ private const val ROTATE_SCORE_DISPLAY_SPEED = 50L
 private const val CLEAN_LINE = "               "
 var games = 0
 var moedas = 0
-
-
 
 fun main() {
         callInits()//inicilizacao da main
@@ -116,12 +115,55 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                 }
                 if (Speed + SPEED_DIFF <= TIME_TO_SPAWN) Speed += SPEED_FACTOR
         }
+        //End of the game, score with name added
+        var tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
         LCD.clear()
-        LCD.write("NABOS :( ")
-
         LCD.cursor(1, 0)
         LCD.write("score: " + score)
-        Time.sleep(4000)
+        LCD.cursor(0, 0)
+        LCD.write("Nome:")
+
+        var col = 5
+        var indice = 0
+        val letra = ALPHABET_ARRAY[indice]
+        LCD.write(letra)
+        LCD.cursor(0, col)
+        var scoreName = emptyList<Char>().toMutableList()
+        var teste = ' '
+        while (tecla != '5') {
+                tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
+                if (tecla == '2' && indice in (0..24)){ //caracter acima
+                        indice++
+                        LCD.cursor(0, col)
+                        LCD.write(ALPHABET_ARRAY[indice])
+                        LCD.cursor(0, col)
+                        //scoreName.add(ALPHABET_ARRAY[indice])
+                        teste = ALPHABET_ARRAY[indice]
+                }
+                if (tecla == '8' && indice in (1..25)){ //caracter abaixo
+                        indice--
+                        LCD.cursor(0, col)
+                        LCD.write(ALPHABET_ARRAY[indice])
+                        LCD.cursor(0, col)
+                        teste = ALPHABET_ARRAY[indice]
+                }
+                if (tecla == '6' && col in (5..14)){ //andar para a direita
+                        col++
+                        LCD.cursor(0, col)
+                        LCD.write(ALPHABET_ARRAY[0])
+                        LCD.cursor(0, col)
+                        scoreName.add(teste)
+                }
+                if (tecla == '4' && col in (6..15)){ //andar para a esquerda
+                        col--
+                        LCD.cursor(0, col)
+                        scoreName.removeAt(col-5)
+                        scoreName.add(teste)
+                }
+        }
+        scoreName.add(ALPHABET_ARRAY[indice])
+        println(scoreName)
+
         if (!mode){
                 coin -= 2
                 //score add

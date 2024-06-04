@@ -143,6 +143,7 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         LCD.cursor(0, col)
         var scoreName = mutableListOf(choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0))
         var numberLers = 0
+        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_11110, 9)//piscar o ecra
         while (tecla != '5') {
                 tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
                 if (tecla == '2' && scoreName[col - 5].pos in (0..24)){ //caracter acima
@@ -195,6 +196,7 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
                 Scores.addScores(Scores.Score(score.toString(), ""))
                 games++
         }
+        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1111_0, 9)//piscar o ecra
         return coin
 }
 fun callInits(){

@@ -1,10 +1,11 @@
 import isel.leic.utils.Time
+import javax.swing.text.Position
 import kotlin.system.measureTimeMillis
 
 
 private const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
 private const val ALPHABET_ARRAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-private const val TIME_TO_SPAWN = 1800L
+private const val TIME_TO_SPAWN = 1L
 private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
@@ -12,6 +13,7 @@ private const val ROTATE_SCORE_DISPLAY_SPEED = 50L
 private const val CLEAN_LINE = "                "
 var games = 0
 var moedas = 0
+data class choseName(val letra: Char, var pos: Int)
 
 val ghost = byteArrayOf(
         0b11111,
@@ -139,41 +141,55 @@ fun game(coin: Int, mode: Boolean, first: Boolean): Int{
         val letra = ALPHABET_ARRAY[indice]
         LCD.write(letra)
         LCD.cursor(0, col)
-        var scoreName = emptyList<Char>().toMutableList()
-        var teste = ' '
+        var scoreName = mutableListOf(choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0))
+        var numberLers = 0
         while (tecla != '5') {
                 tecla = KBD.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
-                if (tecla == '2' && indice in (0..24)){ //caracter acima
-                        indice++
+                if (tecla == '2' && scoreName[col - 5].pos in (0..24)){ //caracter acima
+                        indice = scoreName[col - 5].pos + 1
                         LCD.cursor(0, col)
                         LCD.write(ALPHABET_ARRAY[indice])
                         LCD.cursor(0, col)
-                        //scoreName.add(ALPHABET_ARRAY[indice])
-                        teste = ALPHABET_ARRAY[indice]
+                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos)
+                        scoreName[col - 5].pos++
+                        println(scoreName)
+
+
                 }
-                if (tecla == '8' && indice in (1..25)){ //caracter abaixo
-                        indice--
+                if (tecla == '8' && scoreName[col - 5].pos in (1..25)){ //caracter abaixo
+                        indice = scoreName[col - 5].pos -1
                         LCD.cursor(0, col)
                         LCD.write(ALPHABET_ARRAY[indice])
                         LCD.cursor(0, col)
-                        teste = ALPHABET_ARRAY[indice]
+                        scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos)
+                        scoreName[col - 5].pos--
+                        println(scoreName)
+
                 }
                 if (tecla == '6' && col in (5..14)){ //andar para a direita
                         col++
                         LCD.cursor(0, col)
-                        LCD.write(ALPHABET_ARRAY[0])
+                        LCD.write(scoreName[col - 5].letra)
                         LCD.cursor(0, col)
-                        scoreName.add(teste)
+                        numberLers++
+                        println(scoreName)
+
                 }
                 if (tecla == '4' && col in (6..15)){ //andar para a esquerda
                         col--
                         LCD.cursor(0, col)
-                        scoreName.removeAt(col-5)
-                        scoreName.add(teste)
+                        println(scoreName)
+
+
                 }
         }
-        scoreName.add(ALPHABET_ARRAY[indice])
         println(scoreName)
+        var stringName = ""
+        for (i in 0 .. numberLers){
+                stringName += scoreName[i].letra
+
+        }
+        println(stringName)
         if (!mode){
                 coin --
                 Scores.addScores(Scores.Score(score.toString(), ""))

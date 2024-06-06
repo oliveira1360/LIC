@@ -27,7 +27,17 @@ object Coin_Acceptor {
             return true
         }
 
+
+
+        return false
+
+    }
+    fun seeCoin(): Boolean{
+        if (HAL.isBit(Coin)){
+            return true
+        }
         return false
 
     }
 }
+

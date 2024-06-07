@@ -23,7 +23,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
     // Inicia a classe
     fun init() {
-
+        HAL.init()
     }
 
     // Envia uma trama para o SerialReceiver identificado o destino em addr,os bits de dados em ‘data’ e em size o número de bits a enviar.

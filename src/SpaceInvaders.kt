@@ -238,7 +238,11 @@ fun apresentcionBegin(coin: Int ):Int{
                                 TUI.cursor(0,1)
                                 TUI.write("space invaders")
                         }
-                        if (read_mode()) mode()
+                        if (read_mode()) {
+                                mode()
+                                TUI.cursor(0,1)
+                                TUI.write("space invaders")
+                        }
                 if (inicialTIme < time) {
                         if (timeUtil <= time) {
                                 if (i == listScores.size * 2 - 1) i = 0
@@ -279,13 +283,16 @@ fun mode(){
         TUI.mView()
         var ultimaTecla = ' '
         while (read_mode()) {
-                val tecla = TUI.waitKey(10)
+                var tecla = TUI.waitKey(10)
                 if (ultimaTecla == '#' && tecla == '*'){
                         moedas = 0
                         games = 0
-                }
-                if (tecla != ' ') {
-                        ultimaTecla = tecla
+                        TUI.clear()
+                        TUI.cursor(0,0)
+                        TUI.write("moedas: " + moedas)
+                        TUI.cursor(1,0)
+                        TUI.write("games: " + games)
+                        tecla = 'p'
                 }
                 if (tecla == '#'){
                         TUI.clear()
@@ -303,7 +310,6 @@ fun mode(){
                         TUI.cursor(1, 0)
                         TUI.write(']')
                         game(0, true)
-                        TUI.activeBlilnk()
                         TUI.mView()
 
 
@@ -332,6 +338,9 @@ fun mode(){
                                 }
 
                         }
+                }
+                if (tecla != ' ') {
+                        ultimaTecla = tecla
                 }
 
         }

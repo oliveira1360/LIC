@@ -158,7 +158,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun activeBlilnk(){
         SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1111_0, 9)//piscar o ecra
     }
-    fun desativeBlilnk(){
+    fun deactivateBlilnk(){
         SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1100_0, 9)//piscar o ecra
     }
 }

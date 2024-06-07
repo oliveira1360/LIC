@@ -13,7 +13,6 @@ private const val CLEAN_LINE = "                "
 private const val CLEAN_SPEED = 300L
 private const val ALTERNATE_SPEED = 2000
 private const val TIME_TO_START = 5500
-private const val TIME_SEE_NO_COIN = 100
 var games = 0
 var moedas = 0
 var scoreList = emptyList<Scores.Score>().toMutableList()
@@ -83,10 +82,10 @@ val invader1_0 = byteArrayOf(
 fun main() {
         callInits()//inicilizacao da main
         var coin = 0
-        coin = apresentcionBegin(coin)
+        coin = presentationBegin(coin)
         while (true){
                 coin = game(coin, false)
-                apresentcionBegin(coin)
+                coin = presentationBegin(coin)
         }
 
 
@@ -107,7 +106,7 @@ fun game(coin: Int, mode: Boolean): Int{
         var score = 0
         var lastPos = 0
 
-        while (linha0.length < 14 && linha1.length < 14){
+        while (linha0.length <= 14 && linha1.length <= 14){
                 val random= (0..9).random()
                 if (random > 4) {
                         TUI.cursor(0, POS_INICIAL - linha0.length)
@@ -131,20 +130,20 @@ fun game(coin: Int, mode: Boolean): Int{
                         if (tecla == '#') {
                                 if (lastPos == 0) {
                                         if (linha0.isNotEmpty() && ultimaTecla == linha0[0]) {
-                                                linha0 = linha0.substring(1)// remocer o mostro morto
+                                                linha0 = linha0.substring(1)// remover o mostro morto
                                                 score += mutableListTop[0] + 1
                                                 mutableListTop.removeAt(0)
                                                 ScoreDisplay.setScore(score)
-                                                TUI.cleanKillMoster(POS_INICIAL - linha0.length, 0)
+                                                TUI.cleanKilledMoster(POS_INICIAL - linha0.length, 0)
                                         }
                                 }
                                 else{
                                         if ( linha1.isNotEmpty() && ultimaTecla == linha1[0]) {
-                                                linha1 = linha1.substring(1)// remocer o mostro morto
+                                                linha1 = linha1.substring(1)// remover o mostro morto
                                                 score += mutableListBottom[0] + 1
                                                 mutableListBottom.removeAt(0)
                                                 ScoreDisplay.setScore(score)
-                                                TUI.cleanKillMoster(POS_INICIAL - linha1.length, 1)
+                                                TUI.cleanKilledMoster(POS_INICIAL - linha1.length, 1)
 
 
                                         }
@@ -190,7 +189,8 @@ fun game(coin: Int, mode: Boolean): Int{
                 games++
         }
 
-        TUI.desativeBlilnk()
+        TUI.deactivateBlilnk()
+        TUI.clear()
         return coin
 }
 fun callInits(){
@@ -198,7 +198,7 @@ fun callInits(){
         ScoreDisplay.init()
 }
 
-fun apresentcionBegin(coin: Int ):Int{
+fun presentationBegin(coin: Int ):Int{
         ScoreDisplay.init()
         TUI.cursor(0,1)
         TUI.write("space invaders")
@@ -214,8 +214,6 @@ fun apresentcionBegin(coin: Int ):Int{
         TUI.createCustomChar(0, smiley)
         TUI.createCustomChar(1, ghost)
 
-        var noCoinTime = 0L
-        var seeCoinmsgg = true
         TUI.viewCoins(totalCoin)
         while (tecla != '*' || coin < 0 || Coin_Acceptor.seeCoin()){
                         if (Coin_Acceptor.read_coin()) {
@@ -324,24 +322,26 @@ fun mode(){
                 }
                 if (tecla == '1'){
                         TUI.clear()
-                        TUI.cursor(0,0)
-                        TUI.write("off != 3")
-                        TUI.cursor(1,0)
-                        TUI.write("sair == 3")
+                        TUI.cursor(0,4)
+                        TUI.write("SHUTDOWN")
+                        TUI.cursor(1,1)
+                        TUI.write("YES=3")
+                        TUI.cursor(1,7)
+                        TUI.write("NO=Other")
                         while (true){
                                 val tecla = TUI.waitKey(10)
                                 if (tecla != ' ') {
                                         if (tecla == '3'){
-                                                TUI.mView()
-                                                break
-                                        };
-                                        else {
                                                 println(scoreList)
                                                 TUI.clear()
                                                 for(i in 0 until scoreList.size) {
                                                         Scores.addScores(scoreList[i])
                                                 }
                                                 ScoreDisplay.off(true)
+                                        };
+                                        else {
+                                                TUI.mView()
+                                                break
                                         }
                                 }
                                 if (!read_mode()) break

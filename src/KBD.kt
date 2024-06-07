@@ -2,12 +2,13 @@
 import isel.leic.utils.Time
 
 fun main() {
+    HAL.init()
+    //test buffers
     while (true){
         val read = KBD.getKey()
         if (read != ' ')
         println(read)
     }
-
 }
 
 

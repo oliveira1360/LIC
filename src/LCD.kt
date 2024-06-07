@@ -155,4 +155,10 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun writeCustomChar(location: Int) {
         writeDATA(location)
     }
+    fun activeBlilnk(){
+        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1111_0, 9)//piscar o ecra
+    }
+    fun desativeBlilnk(){
+        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1100_0, 9)//piscar o ecra
+    }
 }

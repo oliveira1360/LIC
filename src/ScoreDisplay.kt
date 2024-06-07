@@ -1,16 +1,14 @@
+import isel.leic.utils.Time
 
 const val UPTADE_SCORE = 0b1010_110
 
 fun main(){
     SerialEmitter.init()
     ScoreDisplay.init()
-    ScoreDisplay.setScore(0b0001_000)
-    ScoreDisplay.setScore(0b0010_001)
-    ScoreDisplay.setScore(0b0011_010)
-
-    ScoreDisplay.setScore(0b1001_011)
-    ScoreDisplay.setScore(UPTADE_SCORE)    //update
-
+    ScoreDisplay.setScore(111)
+    ScoreDisplay.setScore(20)
+    ScoreDisplay.setScore(300)
+    ScoreDisplay.setScore(400)
 }
 
 object ScoreDisplay { // Controla o mostrador de pontuação.
@@ -25,15 +23,53 @@ object ScoreDisplay { // Controla o mostrador de pontuação.
 
     // Envia comando para atualizar o valor do mostrador de pontuação
     fun setScore(value: Int) {
-        SerialEmitter.send(SerialEmitter.Destination.SCORE, value,7)
+
+        var num = value
+        var digitos = mutableListOf<Int>()
+
+        while (num > 0) {
+            val digito = num % 10
+            digitos.add(0, digito)
+            num /= 10
+        }
+        digitos = digitos.reversed().toMutableList()
+        for (i in 0 until digitos.size){
+            SerialEmitter.send(SerialEmitter.Destination.SCORE, i or digitos[i].shl(3),7)
+            Time.sleep(4)
+        }
+        Time.sleep(4)
+        SerialEmitter.send(SerialEmitter.Destination.SCORE, UPTADE_SCORE,7)
+
+
 
     }
 
 
     // Envia comando para desativar/ativar a visualização do mostrador de pontuação
     fun off(value: Boolean) {
-        return if (value) setScore(SCORE_OFF)
-        else setScore(SCORE_ON)
+        return if (value) SerialEmitter.send(SerialEmitter.Destination.SCORE, SCORE_OFF,7)
+        else SerialEmitter.send(SerialEmitter.Destination.SCORE, SCORE_ON,7)
 
     }
+    fun scoreRorate(list: List<Int>){
+        val list = list
+        for (i in 0 until list.size){
+            SerialEmitter.send(SerialEmitter.Destination.SCORE, i or list[i].shl(3),7)
+            Time.sleep(4)
+        }
+        Time.sleep(4)
+        SerialEmitter.send(SerialEmitter.Destination.SCORE, UPTADE_SCORE,7)
+    }
+
+    fun scoreReset(){
+        val list = listOf(0,0,0,0,0,0)
+        for (i in 0 until list.size){
+            SerialEmitter.send(SerialEmitter.Destination.SCORE, i or list[i].shl(3),7)
+            Time.sleep(4)
+        }
+        Time.sleep(4)
+        SerialEmitter.send(SerialEmitter.Destination.SCORE, UPTADE_SCORE,7)
+
+    }
+
 }

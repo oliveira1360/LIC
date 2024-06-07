@@ -284,24 +284,32 @@ fun mode(){
         var ultimaTecla = ' '
         while (read_mode()) {
                 var tecla = TUI.waitKey(10)
-                if (ultimaTecla == '#' && tecla == '*'){
-                        moedas = 0
-                        games = 0
-                        TUI.clear()
-                        TUI.cursor(0,0)
-                        TUI.write("moedas: " + moedas)
-                        TUI.cursor(1,0)
-                        TUI.write("games: " + games)
-                        tecla = 'p'
-                }
                 if (tecla == '#'){
                         TUI.clear()
                         TUI.cursor(0,0)
                         TUI.write("moedas: " + moedas)
                         TUI.cursor(1,0)
                         TUI.write("games: " + games)
-
-
+                        ultimaTecla = '#'
+                        while (true) {
+                                var tecla = TUI.waitKey(10)
+                                if (ultimaTecla == '#' && tecla == '*') {
+                                        moedas = 0
+                                        games = 0
+                                        TUI.clear()
+                                        TUI.cursor(0, 0)
+                                        TUI.write("moedas: " + moedas)
+                                        TUI.cursor(1, 0)
+                                        TUI.write("games: " + games)
+                                        tecla = 'p'
+                                }
+                                if (tecla != ' ') {
+                                        ultimaTecla = tecla
+                                }
+                                if (tecla == '1') break
+                                if (!read_mode()) break
+                        }
+                        TUI.mView()
                 }
                 if (tecla == '*') {
                         TUI.clear()
@@ -336,11 +344,9 @@ fun mode(){
                                                 ScoreDisplay.off(true)
                                         }
                                 }
+                                if (!read_mode()) break
 
                         }
-                }
-                if (tecla != ' ') {
-                        ultimaTecla = tecla
                 }
 
         }

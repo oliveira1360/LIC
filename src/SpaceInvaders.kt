@@ -256,7 +256,7 @@ fun presentationBegin(coin: Int ):Int{
 
                                 TUI.cursor(1, 0)
                                 TUI.write(CLEAN_LINE)
-                                //se o numero for par vai mostrar o score caso contrio mostra a mensagem de quantas moedas tem
+                                //se o numero for par vai mostrar o score caso contrio mostra a mensagem de quantas moedas       tem
                                 if (i%2 == 0) {
                                         val iList = i /2
                                         TUI.cursor(1, 0)

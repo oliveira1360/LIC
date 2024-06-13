@@ -9,7 +9,7 @@ fun main() {
     while(true){
 
     SerialEmitter.send(SerialEmitter.Destination.LCD,0x155,9)
-        Time.sleep(100)
+        Time.sleep(10)
     }
 }
 
@@ -31,8 +31,6 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
 
         val LCDsel  = if (addr == Destination.LCD) 0x01 else 0x08 //0x02 sim
 
-
-
         var valor = 0
         var left = data
         while (left != 0) {
@@ -51,7 +49,7 @@ object SerialEmitter { // Envia tramas para os diferentes módulos Serial Receiv
             send = send.shr(1)//para ver o proximo bit
             clock()
         }
-            if (paridade == 1) HAL.setBits(SDX) else HAL.clrBits(SDX)
+        if (paridade == 1) HAL.setBits(SDX) else HAL.clrBits(SDX)
             clock()
             HAL.setBits(LCDsel)
 

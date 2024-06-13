@@ -31,10 +31,13 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     private const val SERIAL_INTERFACE = true
 
 
+    //mascaras para quando os dados forem enviados em paralelo
+    //---------------------
     const val DATA_MASK = 0x0F
     const val RS_MASK = 0x40
     const val E_MASK = 0x20
     const val CLK_REG_MASK = 0x10
+    //---------------------
 
     // Escreve um byte de comando/dados no LCD em paralelo
     fun writeByteParallel(rs: Boolean, data: Int){
@@ -63,7 +66,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     // Escreve um byte de comando/dados no LCD em série
     private fun writeByteSerial(rs: Boolean, data: Int) {
         if (rs)
-            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1) + 1, 9)// shift e adiciona 1 apara que o bit de menor peso seja 1
+            SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1) + 1, 9)// shift e adiciona 1 para que o bit de menor peso seja 1
         else
             SerialEmitter.send(SerialEmitter.Destination.LCD, data.shl(1), 9)
     }
@@ -151,7 +154,7 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         }
     }
 
-    //vai buscar a meoria o caracter que tem de "dessenhar"
+    //vai buscar a memoria o caracter que tem de "dessenhar"
     fun writeCustomChar(location: Int) {
         writeDATA(location)
     }
@@ -159,6 +162,6 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
         SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1111_0, 9)//piscar o ecra
     }
     fun deactivateBlilnk(){
-        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1100_0, 9)//piscar o ecra
+        SerialEmitter.send( SerialEmitter.Destination.LCD, 0b0000_1100_0, 9)//nao piscar o ecra
     }
 }

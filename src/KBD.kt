@@ -17,6 +17,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     private const val SET_ACK_1 = 0b1000_0000
     private const val CHECKBIT = 0b0001_0000
     private val digitArray = "147*2580369#"
+    private const val READ_VALUE_KBD = 0b0000_1111
     private const val NONERETURN = ' '
 
     // Inicia a classe
@@ -27,7 +28,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
         if (HAL.isBit(CHECKBIT) ) {
-            val tecla = HAL.readBits(0b0000_1111)
+            val tecla = HAL.readBits(READ_VALUE_KBD)
             HAL.setBits(SET_ACK_1)
             while(HAL.isBit(CHECKBIT));
             HAL.clrBits(SET_ACK_1)

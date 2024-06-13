@@ -1,24 +1,32 @@
 import isel.leic.utils.Time
-import javax.swing.text.Position
-import kotlin.system.measureTimeMillis
 
 
+//constantes
+//-------------------------------------------------------------
 private const val DIGIGIT_ARRAY_IN_CHAR = "1472580369"
 private const val TIME_TO_SPAWN = 500L
 private const val POS_INICIAL = 15
 private const val SPEED_FACTOR = 50
 private const val SPEED_DIFF = 400
-private const val ROTATE_SCORE_DISPLAY_SPEED = 100L
+private const val ROTATE_SCORE_DISPLAY_SPEED = 50L
 private const val CLEAN_LINE = "                "
 private const val CLEAN_SPEED = 300L
 private const val ALTERNATE_SPEED = 2000
 private const val TIME_TO_START = 5500
+private const val MAX_MOSTER_SIZE = 14
+//-------------------------------------------------------------
+
+//variaveis globais
+//-------------------------------------------------------------
 var games = 0
 var moedas = 0
 var scoreList = emptyList<Scores.Score>().toMutableList()
+//-------------------------------------------------------------
 
 data class choseName(val letra: Char, var pos: Int, var end:Boolean = true)
 
+//"desanhos"
+//-------------------------------------------------------------
 val ghost = byteArrayOf(
         0b11111,
         0b11111,
@@ -79,8 +87,12 @@ val invader1_0 = byteArrayOf(
         0b00000,
         0b00000
         )
+//-------------------------------------------------------------
+
+
 fun main() {
-        callInits()//inicilizacao da main
+        TUI.init()
+        ScoreDisplay.init()
         var coin = 0
         coin = presentationBegin(coin)
         while (true){
@@ -94,7 +106,7 @@ fun main() {
 fun game(coin: Int, mode: Boolean): Int{
 
         var coin = coin
-        val DIGIGIT_ARRAY_IN_INT = arrayOf(1,4,7,2,5,8,0,3,6,9)
+        val DIGIGIT_ARRAY_IN_INT = arrayOf(1,4,7,2,5,8,0,3,6,9)//array com a mesma sequencia da DIGIGIT_ARRAY_IN_CHAR, usada para evitar o usado de conversoes
         val mutableListTop = mutableListOf<Int>()
         val mutableListBottom = mutableListOf<Int>()
 
@@ -106,7 +118,7 @@ fun game(coin: Int, mode: Boolean): Int{
         var score = 0
         var lastPos = 0
 
-        while (linha0.length <= 14 && linha1.length <= 14){
+        while (linha0.length <= MAX_MOSTER_SIZE && linha1.length <= MAX_MOSTER_SIZE){
                 val random= (0..9).random()
                 if (random > 4) {
                         TUI.cursor(0, POS_INICIAL - linha0.length)
@@ -128,6 +140,7 @@ fun game(coin: Int, mode: Boolean): Int{
                         val tecla = TUI.waitKey(TIME_TO_SPAWN- Speed)
                         if (tecla == '*') lastPos = TUI.cursorPos(true, lastPos,smiley) // mudar de linha
                         if (tecla == '#') {
+                                //usa as listas top e bottom para saber qual o valor tem que aumentar na pontuacao
                                 if (lastPos == 0) {
                                         if (linha0.isNotEmpty() && ultimaTecla == linha0[0]) {
                                                 linha0 = linha0.substring(1)// remover o mostro morto
@@ -193,10 +206,7 @@ fun game(coin: Int, mode: Boolean): Int{
         TUI.clear()
         return coin
 }
-fun callInits(){
-        TUI.init()
-        ScoreDisplay.init()
-}
+
 
 fun presentationBegin(coin: Int ):Int{
         ScoreDisplay.init()
@@ -210,7 +220,7 @@ fun presentationBegin(coin: Int ):Int{
         var timeUtil = 0L
         var i = 0
         val listScores = Scores.getScores()
-        var inicialTIme = Time.getTimeInMillis() + TIME_TO_START
+        var inicialTIme = Time.getTimeInMillis() + TIME_TO_START//usado para saber passado quanto deve deve comecar a aparcer o score na primeira interacao
         TUI.createCustomChar(0, smiley)
         TUI.createCustomChar(1, ghost)
 
@@ -220,7 +230,6 @@ fun presentationBegin(coin: Int ):Int{
                                 totalCoin += 2
                                 TUI.viewCoins(totalCoin)
                                 moedas++
-                                inicialTIme = Time.getTimeInMillis() + 1000
                         }
                         ScoreDisplay.scoreRorate(lista)
                         lista = TUI.rotateListRight(lista)
@@ -228,7 +237,7 @@ fun presentationBegin(coin: Int ):Int{
                         ScoreDisplay.scoreRorate(lista)
                         lista = TUI.rotateListRight(lista)
                         if (tecla == '*' && totalCoin == 0) {
-                                TUI.clear()
+                                TUI.write(CLEAN_LINE)
                                 TUI.cursor(0, 1)
                                 TUI.write("Insert coin")
                                 Time.sleep(800)
@@ -243,10 +252,11 @@ fun presentationBegin(coin: Int ):Int{
                         }
                 if (inicialTIme < time) {
                         if (timeUtil <= time) {
-                                if (i == listScores.size * 2 - 1) i = 0
+                                if (i == listScores.size * 2 - 1) i = 0//Para saber se ja mostrou todos os scores intercalados com a messagem default do jogo, caso tenha volta ao inicio
 
                                 TUI.cursor(1, 0)
                                 TUI.write(CLEAN_LINE)
+                                //se o numero for par vai mostrar o score caso contrio mostra a mensagem de quantas moedas tem
                                 if (i%2 == 0) {
                                         val iList = i /2
                                         TUI.cursor(1, 0)
@@ -278,7 +288,7 @@ fun presentationBegin(coin: Int ):Int{
 }
 
 fun mode(){
-        TUI.mView()
+        TUI.mView()//texto de apresentacao do modo de manutencao
         var ultimaTecla = ' '
         while (read_mode()) {
                 var tecla = TUI.waitKey(10)
@@ -337,6 +347,7 @@ fun mode(){
                                                 for(i in 0 until scoreList.size) {
                                                         Scores.addScores(scoreList[i])
                                                 }
+                                                Statistics.updateStatistic(Statistics.Statistic(moedas, games))
                                                 ScoreDisplay.off(true)
                                         };
                                         else {

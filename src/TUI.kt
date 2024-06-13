@@ -3,11 +3,23 @@
 private const val ALPHABET_ARRAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 private const val WAIT_KEY = 1000L
 private const val CLEAN_LINE = "                "
+private const val MOVE_RIGHT_NAME = '6'
+private const val MOVE_LEFTT_NAME = '4'
+private const val MOVE_UP_NAME = '2'
+private const val MOVE_DOWN_NAME = '8'
+private const val ENTER_NAME = '5'
+private const val NAME_INICIAL_POS = 5
+private const val NAME_MAX_POS = 9
 
 
 
 
-object TUI {
+
+
+
+
+
+    object TUI {
     fun insertName(): String{
         var tecla = waitKey(WAIT_KEY)
         var col = 5
@@ -16,38 +28,37 @@ object TUI {
         write(letra)
         cursor(0, col)
         var scoreName = mutableListOf(choseName('A', 0, false),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0),choseName('A', 0))
-        var numberLers = 0
         activeBlilnk()
-        while (tecla != '5' ) {
+        while (tecla != ENTER_NAME ) {
             tecla = waitKey(WAIT_KEY)
-            if (tecla == '2' && scoreName[col - 5].pos in (0..24)){ //caracter acima
-                indice = scoreName[col - 5].pos + 1
+            if (tecla == MOVE_UP_NAME && scoreName[col - 5].pos in (0 until ALPHABET_ARRAY.length - 1)){ //caracter acima
+                indice = scoreName[col - NAME_INICIAL_POS].pos + 1
                 cursor(0, col)
                 write(ALPHABET_ARRAY[indice])
                 cursor(0, col)
-                scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos, false)
-                scoreName[col - 5].pos++
+                scoreName[col - NAME_INICIAL_POS] = choseName(ALPHABET_ARRAY[indice], scoreName[col - NAME_INICIAL_POS].pos, false)
+                scoreName[col - NAME_INICIAL_POS].pos++
 
 
             }
-            if (tecla == '8' && scoreName[col - 5].pos in (1..25)){ //caracter abaixo
-                indice = scoreName[col - 5].pos -1
+            if (tecla == MOVE_DOWN_NAME && scoreName[col - NAME_INICIAL_POS].pos in (1..ALPHABET_ARRAY.length)){ //caracter abaixo
+                indice = scoreName[col - NAME_INICIAL_POS].pos -1
                 cursor(0, col)
                 write(ALPHABET_ARRAY[indice])
                 cursor(0, col)
-                scoreName[col - 5] = choseName(ALPHABET_ARRAY[indice], scoreName[col - 5].pos, false)
-                scoreName[col - 5].pos--
+                scoreName[col - NAME_INICIAL_POS] = choseName(ALPHABET_ARRAY[indice], scoreName[col - NAME_INICIAL_POS].pos, false)
+                scoreName[col - NAME_INICIAL_POS].pos--
 
             }
-            if (tecla == '6' && col in (5..9)){ //andar para a direita
+            if (tecla == MOVE_RIGHT_NAME && col in (NAME_INICIAL_POS..NAME_MAX_POS)){ //andar para a direita
                 col++
                 cursor(0, col)
                 write(scoreName[col - 5].letra)
                 cursor(0, col)
-                scoreName[col - 5] = choseName(scoreName[col - 5].letra, scoreName[col - 5].pos, false)
+                scoreName[col - NAME_INICIAL_POS] = choseName(scoreName[col - NAME_INICIAL_POS].letra, scoreName[col - NAME_INICIAL_POS].pos, false)
 
             }
-            if (tecla == '4' && col in (6..10)){ //andar para a esquerda
+            if (tecla == MOVE_LEFTT_NAME && col in (NAME_INICIAL_POS + 1..NAME_MAX_POS +  1)){ //andar para a esquerda
                 col--
                 cursor(0, col)
 
@@ -137,7 +148,7 @@ object TUI {
 
 
 
-    fun cleanKillMoster(end:Int, l: Int){
+    fun cleanKilledMoster(end:Int, l: Int){
         LCD.cursor(l, end)
         LCD.write(' ')
         LCD.cursor(l, 1)
@@ -169,8 +180,8 @@ object TUI {
     fun activeBlilnk(){
         LCD.activeBlilnk()
     }
-    fun desativeBlilnk(){
-        LCD.desativeBlilnk()
+    fun deactivateBlilnk(){
+        LCD.deactivateBlilnk()
     }
 
     //-------------------------------------------------------------------------
@@ -180,7 +191,6 @@ object TUI {
     fun waitKey(timeout: Long): Char {
         return KBD.waitKey(timeout)
     }
-
 
     //-------------------------------------------------------------------------
 

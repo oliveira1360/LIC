@@ -151,7 +151,7 @@ fun game(coin: Int, mode: Boolean): Int{
                                         }
                                 }
                                 else{
-                                        if ( linha1.isNotEmpty() && ultimaTecla == linha1[0]) {
+                                        if (linha1.isNotEmpty() && ultimaTecla == linha1[0]) {
                                                 linha1 = linha1.substring(1)// remover o mostro morto
                                                 score += mutableListBottom[0] + 1
                                                 mutableListBottom.removeAt(0)
@@ -237,7 +237,7 @@ fun presentationBegin(coin: Int ):Int{
                         ScoreDisplay.scoreRorate(lista)
                         lista = TUI.rotateListRight(lista)
                         if (tecla == '*' && totalCoin == 0) {
-                                TUI.write(CLEAN_LINE)
+                                TUI.clear()
                                 TUI.cursor(0, 1)
                                 TUI.write("Insert coin")
                                 Time.sleep(800)

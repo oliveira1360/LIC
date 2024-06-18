@@ -27,7 +27,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
 
     // Retorna de imediato a tecla premida ou NONE se não há tecla premida.
     fun getKey(): Char {
-        if (HAL.isBit(CHECKBIT) ) {
+        if (HAL.isBit(CHECKBIT)) {
             val tecla = HAL.readBits(READ_VALUE_KBD)
             HAL.setBits(SET_ACK_1)
             while(HAL.isBit(CHECKBIT));
@@ -43,7 +43,7 @@ object KBD { // Ler teclas. Métodos retornam ‘0’..’9’,’#’,’*’ o
         val timeWait = Time.getTimeInMillis() + timeout
         while (time < timeWait){
             val tecla = getKey()
-            if (tecla != ' ') return tecla
+            if (tecla != NONERETURN) return tecla
             time  = Time.getTimeInMillis()
         }
         return NONERETURN

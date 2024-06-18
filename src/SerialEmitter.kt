@@ -8,7 +8,7 @@ fun main() {
     SerialEmitter.init()
     while(true){
 
-    SerialEmitter.send(SerialEmitter.Destination.LCD,0x155,9)
+    SerialEmitter.send(SerialEmitter.Destination.LCD,0b1000_0000_0,9)
         Time.sleep(10)
     }
 }

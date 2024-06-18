@@ -21,11 +21,12 @@ private const val MAX_MOSTER_SIZE = 14
 var games = 0
 var moedas = 0
 var scoreList = emptyList<Scores.Score>().toMutableList()
+var play = true
 //-------------------------------------------------------------
 
 data class choseName(val letra: Char, var pos: Int, var end:Boolean = true)
 
-//"desanhos"
+//"desenhos"
 //-------------------------------------------------------------
 val ghost = byteArrayOf(
         0b11111,
@@ -95,10 +96,11 @@ fun main() {
         ScoreDisplay.init()
         var coin = 0
         coin = presentationBegin(coin)
-        while (true){
+        while (play){
                 coin = game(coin, false)
                 coin = presentationBegin(coin)
         }
+        print("ola")
 
 
 
@@ -118,7 +120,7 @@ fun game(coin: Int, mode: Boolean): Int{
         var score = 0
         var lastPos = 0
 
-        while (linha0.length <= MAX_MOSTER_SIZE && linha1.length <= MAX_MOSTER_SIZE){
+        while (linha0.length <= MAX_MOSTER_SIZE && linha1.length <= MAX_MOSTER_SIZE ){
                 val random= (0..9).random()
                 if (random > 4) {
                         TUI.cursor(0, POS_INICIAL - linha0.length)
@@ -192,7 +194,7 @@ fun game(coin: Int, mode: Boolean): Int{
                 TUI.write("Nome:")
 
                 val playerName = TUI.insertName()
-                scoreList.add(Scores.Score( score.toString(), playerName))
+                scoreList.add(Scores.Score(score.toString(), playerName))
 
         }
 
@@ -210,8 +212,10 @@ fun game(coin: Int, mode: Boolean): Int{
 
 fun presentationBegin(coin: Int ):Int{
         ScoreDisplay.init()
-        TUI.cursor(0,1)
-        TUI.write("space invaders")
+        if (play) {
+                TUI.cursor(0, 1)
+                TUI.write("space invaders")
+        }
 
         var tecla = TUI.waitKey(ROTATE_SCORE_DISPLAY_SPEED)
         var lista = listOf(10,11,12,13,14,15)
@@ -225,7 +229,7 @@ fun presentationBegin(coin: Int ):Int{
         TUI.createCustomChar(1, ghost)
 
         TUI.viewCoins(totalCoin)
-        while (tecla != '*' || coin < 0 || Coin_Acceptor.seeCoin()){
+                while (tecla != '*' && play|| coin < 0 || Coin_Acceptor.seeCoin()){
                         if (Coin_Acceptor.read_coin()) {
                                 totalCoin += 2
                                 TUI.viewCoins(totalCoin)
@@ -247,8 +251,10 @@ fun presentationBegin(coin: Int ):Int{
                         }
                         if (read_mode()) {
                                 mode()
-                                TUI.cursor(0,1)
-                                TUI.write("space invaders")
+                                if (play) {
+                                        TUI.cursor(0, 1)
+                                        TUI.write("space invaders")
+                                }
                         }
                 if (inicialTIme < time) {
                         if (timeUtil <= time) {
@@ -277,12 +283,14 @@ fun presentationBegin(coin: Int ):Int{
 
 
         }
-        TUI.clear()
-        ScoreDisplay.scoreReset()
-        TUI.cursor(0, 0)
-        TUI.write(']')
-        TUI.cursor(1, 0)
-        TUI.write(']')
+        if (play) {
+                TUI.clear()
+                ScoreDisplay.scoreReset()
+                TUI.cursor(0, 0)
+                TUI.write(']')
+                TUI.cursor(1, 0)
+                TUI.write(']')
+        }
         return  totalCoin
 
 }
@@ -349,6 +357,8 @@ fun mode(){
                                                 }
                                                 Statistics.updateStatistic(Statistics.Statistic(moedas, games))
                                                 ScoreDisplay.off(true)
+                                                play = false
+
                                         };
                                         else {
                                                 TUI.mView()

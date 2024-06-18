@@ -96,11 +96,11 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun init() {
 
         Time.sleep(18)
-        writeCMD( 0b0011_1111)
+        writeCMD(0b0011_1111)
         Time.sleep(5)
-        writeCMD( 0b0011_0000)
+        writeCMD(0b0011_0000)
         Time.sleep(1)
-        writeCMD(  0b0011_0000)
+        writeCMD(0b0011_0000)
         Time.sleep(1)
         writeCMD(0b0011_1000)
         Time.sleep(2)
@@ -128,7 +128,6 @@ object LCD { // Escreve no LCD usando a interface a 4 bits.
     fun write(text: String) {
         for (element in text)
             write(element)
-
     }
 
 

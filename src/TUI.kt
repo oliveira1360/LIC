@@ -19,7 +19,7 @@ private const val NAME_MAX_POS = 9
 
 
 
-    object TUI {
+object TUI {
     fun insertName(): String{
         var tecla = waitKey(WAIT_KEY)
         var col = 5
@@ -62,11 +62,10 @@ private const val NAME_MAX_POS = 9
                 col--
                 cursor(0, col)
 
-
             }
         }
         var stringName = ""
-        for (i in 0 until scoreName.size ){
+        for (i in 0 until scoreName.size){
             if (scoreName[i].end) break;
             stringName += scoreName[i].letra
         }
@@ -86,7 +85,7 @@ private const val NAME_MAX_POS = 9
         cursor(1, 10)
         writeCustomChar(1)
         cursor(1, 13 )
-        write("$" + totalCoin  )
+        write("$" + totalCoin)
     }
     fun mView(){
         clear()
@@ -151,7 +150,7 @@ private const val NAME_MAX_POS = 9
     fun cleanKilledMoster(end:Int, l: Int){
         LCD.cursor(l, end)
         LCD.write(' ')
-        LCD.cursor(l, 1)
+        cursor(l, 1)
     }
 
 
@@ -164,7 +163,6 @@ private const val NAME_MAX_POS = 9
     fun write(c: String) {
         LCD.write(c)
     }
-
     fun cursor(line: Int, column: Int) {
         LCD.cursor(line, column)
     }

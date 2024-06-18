@@ -100,7 +100,6 @@ fun main() {
                 coin = game(coin, false)
                 coin = presentationBegin(coin)
         }
-        print("ola")
 
 
 
